@@ -1,0 +1,17 @@
+{
+    "Server" : {
+        "url" : "localhost",
+        "port" : 3000,
+        "hostname" : "localhost"
+    },
+
+    "Database" : {
+        "name" : "phone_booth_database",
+        "user" : "test_user",
+        "password" : "qwerty123"
+    },
+
+    "Password" : {
+        "SaltRounds" : 10
+    }
+}

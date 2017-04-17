@@ -1,0 +1,23 @@
+{
+  "name": "phone_booth",
+  "version": "1.0.0",
+  "description": "A Web demo on phone book application",
+  "main": "app.js",
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "bluebird": "^3.5.0",
+    "config": "^1.25.1",
+    "express": "^4.15.2",
+    "grunt": "^1.0.1",
+    "grunt-cli": "^1.2.0",
+    "lodash": "^4.17.4",
+    "sequelize": "^3.30.4",
+    "winston": "^2.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Luk Ming Kit",
+  "license": "ISC"
+}
