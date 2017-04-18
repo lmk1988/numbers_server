@@ -1,17 +1,24 @@
 {
     "Server" : {
-        "url" : "localhost",
-        "port" : 3000,
-        "hostname" : "localhost"
+        "url"       : "localhost",
+        "port"      : 3000,
+        "hostName"  : "localhost"
     },
 
     "Database" : {
-        "name" : "phone_booth_database",
-        "user" : "test_user",
-        "password" : "qwerty123"
+        "name"      : "phone_booth_database",
+        "user"      : "test_user",
+        "password"  : "qwerty123",
+        "host"      : "localhost",
+        "port"      : 3306
     },
 
     "Password" : {
         "SaltRounds" : 10
+    },
+
+    "Security" : {
+        "accessTokenLen"  : 200,
+        "refreshTokenLen" : 200,
     }
 }
