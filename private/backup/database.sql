@@ -16,6 +16,25 @@
 CREATE DATABASE IF NOT EXISTS `phone_booth_database` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `phone_booth_database`;
 
+-- Dumping structure for table phone_booth_database.user_access
+CREATE TABLE IF NOT EXISTS `user_access` (
+  `access_id` int(10) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) NOT NULL,
+  `access_token` varchar(255) NOT NULL,
+  `refresh_token` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`access_id`),
+  UNIQUE KEY `access_token` (`access_token`),
+  UNIQUE KEY `refresh_token` (`refresh_token`),
+  KEY `FK_user_access_user_info` (`user_id`),
+  CONSTRAINT `FK_user_access_user_info` FOREIGN KEY (`user_id`) REFERENCES `user_info` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table phone_booth_database.user_access: ~0 rows (approximately)
+/*!40000 ALTER TABLE `user_access` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_access` ENABLE KEYS */;
+
 -- Dumping structure for table phone_booth_database.user_info
 CREATE TABLE IF NOT EXISTS `user_info` (
   `user_id` int(10) NOT NULL AUTO_INCREMENT,
@@ -23,7 +42,8 @@ CREATE TABLE IF NOT EXISTS `user_info` (
   `email` varchar(50) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`user_id`)
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table phone_booth_database.user_info: ~0 rows (approximately)
@@ -46,13 +66,16 @@ CREATE TABLE IF NOT EXISTS `user_password` (
 -- Dumping structure for table phone_booth_database.user_phone_booth
 CREATE TABLE IF NOT EXISTS `user_phone_booth` (
   `phone_booth_id` int(10) NOT NULL,
+  `user_id` int(10) NOT NULL,
   `name` varchar(50) NOT NULL,
   `img_url` varchar(200) DEFAULT NULL,
   `contact_num` int(20) NOT NULL,
   `contact_ext` int(3) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`phone_booth_id`)
+  PRIMARY KEY (`phone_booth_id`),
+  KEY `FK_user_phone_booth_user_info` (`user_id`),
+  CONSTRAINT `FK_user_phone_booth_user_info` FOREIGN KEY (`user_id`) REFERENCES `user_info` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table phone_booth_database.user_phone_booth: ~0 rows (approximately)
