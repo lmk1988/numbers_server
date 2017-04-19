@@ -34,5 +34,6 @@ function generateRandomString(length){
     });
 }
 
-exports.hashPlainPassword   = hashPlainPassword;
-exports.comparePassword     = comparePassword;
+exports.hashPlainPassword       = hashPlainPassword;
+exports.comparePassword         = comparePassword;
+exports.generateRandomString    = generateRandomString;
