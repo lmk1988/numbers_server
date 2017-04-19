@@ -26,6 +26,10 @@ const FIELDS = {
     UPDATED_AT              : "updated_at"
 };
 
+const VIRTUAL_FIELDS = {
+    PHONE_BOOTH_EXTRA_ARR   : "phone_booth_extras"
+};
+
 const CONSTANTS = {
     "TABLES" : TABLES,
     "FIELDS" : FIELDS
