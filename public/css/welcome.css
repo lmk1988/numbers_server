@@ -1,0 +1,10 @@
+body {
+    background-image: url("../img/bg_welcome.jpg");
+    background-repeat: no-repeat;
+    background-size: cover
+}
+
+body h2 {
+    color: white;
+    text-align: center
+}
