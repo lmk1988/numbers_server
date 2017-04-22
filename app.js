@@ -25,16 +25,18 @@ if(!SERVER_CONFIG){
 }else{
     database.validateDatabaseConnection()
     .then(function(){
-  
+        
+        winston.info("database connection validated");
+
         app.use(middlewares);
         app.use("/api", api);
         app.use('/', express.static(__dirname + '/public'));
 
         app.listen(SERVER_CONFIG.port, function () {
-            winston.log("app listening on port"+SERVER_CONFIG.port)
+            winston.info("app listening on port: "+SERVER_CONFIG.port)
         })
     })
-    .then(function(){
-        winston.error("database connection not ready")
+    .catch(function(err){
+        winston.error("database connection not ready", err)
     });
 }
