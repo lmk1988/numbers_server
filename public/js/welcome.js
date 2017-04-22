@@ -4,10 +4,10 @@ var app = angular.module('app', ['ngRoute', 'ngMessages']);
 app.config(function($routeProvider) {
     $routeProvider
     .when('/login', {
-        templateUrl : 'template/login.html'
+        templateUrl : '/html/template/login.html'
     })
     .when('/register', {
-        templateUrl : 'template/register.html'
+        templateUrl : '/html/template/register.html'
     })
     .otherwise({
         redirectTo : '/login'
