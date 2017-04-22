@@ -4,6 +4,8 @@ const config    = require("config");
 const Promise   = require("bluebird");
 const Sequelize = require("sequelize");
 
+const CONSTANTS = rootRequire("app_modules/models/constants");
+
 /**
  * @return {Object} Sequelize object which is used to interact with database
  */
@@ -55,14 +57,18 @@ function createModel(tableName, tableFields){
 
     //Copy general options
     const options = Object.assign({}, GENERAL_TABLE_OPTIONS);
-    
+
     //Point sequelize to the correct timestamp fields
     if(tableFields[CONSTANTS.FIELDS.CREATED_AT]){
         options.createdAt = CONSTANTS.FIELDS.CREATED_AT;
+    }else{
+        options.createdAt = false;
     }
 
     if(tableFields[CONSTANTS.FIELDS.UPDATED_AT]){
         options.updatedAt = CONSTANTS.FIELDS.UPDATED_AT;
+    }else{
+        options.updatedAt = false;
     }
 
     return sequelizeConnection.define(tableName, tableFields, options);

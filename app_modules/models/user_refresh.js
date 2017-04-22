@@ -2,27 +2,36 @@
 const Sequelize = require("sequelize");
 const CONSTANTS = require("./constants");
 const database  = rootRequire("app_modules/components/database");
+const UserInfo  = require("./user_info");
 
 const TABLE_FIELDS = {
-    [CONSTANTS.FIELDS.USER_ID] : {
+    [CONSTANTS.FIELDS.REFRESH_ID] : {
         type : Sequelize.INTEGER.UNSIGNED,
         allowNull : false,
         primaryKey : true,
         autoIncrement : true
     },
 
-    [CONSTANTS.FIELDS.NAME] : {
-        type : Sequelize.STRING(50),
-        allowNull : false
+    [CONSTANTS.FIELDS.USER_ID] : {
+        type : Sequelize.INTEGER.UNSIGNED,
+        allowNull : false,
+        references : {
+            model : UserInfo.MODEL,
+            key   : CONSTANTS.FIELDS.USER_ID
+        },
+        onUpdate : "CASCADE",
+        onDelete : "CASCADE"
     },
 
-    [CONSTANTS.FIELDS.EMAIL] : {
-        type : Sequelize.STRING(50),
+    [CONSTANTS.FIELDS.REFRESH_TOKEN] : {
+        type : Sequelize.STRING(255),
         allowNull : false,
-        validate : {
-            isEmail : true
-        },
         unique : true
+    },
+
+    [CONSTANTS.FIELDS.REFRESH_EXPIRY] : {
+        type : Sequelize.DATE,
+        allowNull : true
     },
 
     [CONSTANTS.FIELDS.CREATED_AT] : {
@@ -36,7 +45,7 @@ const TABLE_FIELDS = {
     }
 };
 
-const MODEL = database.createModel(CONSTANTS.TABLES.USER_INFO, TABLE_FIELDS);
+const MODEL = database.createModel(CONSTANTS.TABLES.USER_REFRESH, TABLE_FIELDS);
 
 exports.MODEL           = MODEL;
 exports.TABLE_FIELDS    = TABLE_FIELDS;

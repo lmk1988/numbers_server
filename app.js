@@ -8,16 +8,18 @@ global.rootRequire = function(name) {
     return require(__dirname + '/' + name);
 }
 
-const config        = require("config");
-const express       = require("express");
-const winston       = require("winston");
-const io            = require("socket.io");
-const app           = express();
+const config            = require("config");
+const express           = require("express");
+const winston           = require("winston");
+const bodyParser        = require('body-parser');
+const app               = express();
 
 const middlewares   = rootRequire("app_modules/middlewares");
 const api           = rootRequire("app_modules/api");
 const database      = rootRequire("app_modules/components/database");
+const oauth2        = rootRequire("app_modules/components/oauth2");
 
+app.oauth = oauth2;
 
 const SERVER_CONFIG = config.get("Server");
 if(!SERVER_CONFIG){
@@ -25,15 +27,27 @@ if(!SERVER_CONFIG){
 }else{
     database.validateDatabaseConnection()
     .then(function(){
-        
+
         winston.info("database connection validated");
 
+        app.set('view engine', 'ejs');
+
+        app.use(bodyParser.urlencoded({ extended: true }));
+        app.use(bodyParser.json({limit: '5mb'}));
+        app.all('/oauth/token', app.oauth.grant());
         app.use(middlewares);
         app.use("/api", api);
         app.use('/', express.static(__dirname + '/public'));
+        app.use(app.oauth.errorHandler());
+        //TODO test
+        app.use(function(req, res, next){
+            winston.info("uncaught request", req.path, req.originalUrl);
+            next();
+        });
 
-        app.listen(process.env.port || SERVER_CONFIG.port, function () {
-            winston.info("app listening on port: "+SERVER_CONFIG.port)
+        const port = process.env.port || SERVER_CONFIG.port;
+        app.listen(port, function () {
+            winston.info("app listening on port: "+port)
         })
     })
     .catch(function(err){

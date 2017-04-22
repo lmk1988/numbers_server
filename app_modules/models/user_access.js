@@ -1,7 +1,7 @@
 "use strict";
 const Sequelize = require("sequelize");
 const CONSTANTS = require("./constants");
-const database  = rootRequire("components/database");
+const database  = rootRequire("app_modules/components/database");
 const UserInfo  = require("./user_info");
 
 const TABLE_FIELDS = {
@@ -29,10 +29,9 @@ const TABLE_FIELDS = {
         unique : true
     },
 
-    [CONSTANTS.FIELDS.REFRESH_TOKEN] : {
-        type : Sequelize.STRING(255),
-        allowNull : false,
-        unique : true
+    [CONSTANTS.FIELDS.ACCESS_EXPIRY] : {
+        type : Sequelize.DATE,
+        allowNull : true
     },
 
     [CONSTANTS.FIELDS.CREATED_AT] : {

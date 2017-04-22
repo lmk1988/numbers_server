@@ -35,6 +35,24 @@ function registerUser(name, email, password){
 }
 
 /**
+ * Checks if a user with the given email already exist
+ * @param {String} email 
+ */
+function checkIfAccountExist(email){
+    return UserInfo.MODEL.findOne({ 
+        where : {
+            [CONSTANTS.FIELDS.EMAIL] : email
+        }
+    }).then(function(userInfoInstance){
+        if(userInfoInstance){
+            return true;
+        }else{
+            return false;
+        }
+    })
+}
+
+/**
  * Change user password
  * @param {Integer} user_id
  * @param {String} password 
@@ -44,11 +62,11 @@ function setNewUserPassword(user_id, password){
     .then(function(hashedPassword){
         return UserPassword.MODEL.update({
             [CONSTANTS.FIELDS.PASSWORD_HASH] : hashedPassword
-        }, { 
+        }, {
             where : {
                 [CONSTANTS.FIELDS.USER_ID] : user_id
             },
-            transaction : t 
+            transaction : t
         })
     })
     .spread(function(affectedCount, affectedRows){
@@ -61,5 +79,45 @@ function setNewUserPassword(user_id, password){
     });
 }
 
-exports.registerUser        = registerUser;
-exports.setNewUserPassword  = setNewUserPassword;
+
+/**
+ * Validate user email with its password
+ * @param {String} email
+ * @param {String} password
+ * @returns {Promise<[Boolean, String]>} true if email exist and has the same password, returns the userID with it
+ */
+function validateUserPassword(email, password){
+    return UserInfo.MODEL.findOne({
+        where : {
+            [CONSTANTS.FIELDS.EMAIL] : email
+        }
+    })
+    .then(function(userInfoInstance){
+        if(!userInfoInstance){
+            return [false, null];
+        }else{
+            const userID = userInfoInstance.get(CONSTANTS.FIELDS.USER_ID);
+            return UserPassword.MODEL.findOne({
+                where : {
+                    [CONSTANTS.FIELDS.USER_ID] : userID,
+                },
+                attributes : [CONSTANTS.FIELDS.PASSWORD_HASH]
+            })
+            .then(function(userPasswordInstance){
+                if(!userPasswordInstance){
+                    return [false, null];
+                }else{
+                    return hash.comparePassword(password, userPasswordInstance.get(CONSTANTS.FIELDS.PASSWORD_HASH))
+                    .then(function(bol_match){
+                        return [bol_match, bol_match?userID:null];
+                    });
+                }
+            })
+        }
+    });
+}
+
+exports.registerUser            = registerUser;
+exports.checkIfAccountExist     = checkIfAccountExist;
+exports.setNewUserPassword      = setNewUserPassword;
+exports.validateUserPassword    = validateUserPassword;

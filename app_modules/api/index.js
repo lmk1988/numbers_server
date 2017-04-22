@@ -1,10 +1,9 @@
 "use strict";
-const express = require("express");
-const router = express.Router()
+const express   = require("express");
+const users     = require("./users");
+const router    = express.Router();
 
-router.use("/users", function(req, res){
-    res.send('users')
-});
+router.use("/users", users);
 
 router.use("/phone_booth", function(req, res){
     res.send('phonebooth')

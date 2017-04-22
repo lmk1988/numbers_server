@@ -1,7 +1,7 @@
 "use strict";
 const Sequelize         = require("sequelize");
 const CONSTANTS         = require("./constants");
-const database          = rootRequire("components/database");
+const database          = rootRequire("app_modules/components/database");
 const UserPhoneBooth    = require("./user_phone_booth");
 
 const TABLE_FIELDS = {
