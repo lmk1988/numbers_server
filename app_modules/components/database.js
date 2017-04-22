@@ -40,7 +40,10 @@ function createSequelizeDatabaseConnection(){
 const sequelizeConnection = createSequelizeDatabaseConnection();
 
 function validateDatabaseConnection(){
-    return sequelizeConnection.authenticate();
+    return sequelizeConnection.authenticate()
+    .then(function(){
+        return sequelizeConnection.sync();
+    });
 }
 
 const GENERAL_TABLE_OPTIONS = {
