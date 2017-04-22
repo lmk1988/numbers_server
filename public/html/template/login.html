@@ -1,14 +1,23 @@
 <div ng-controller="loginCtrl">
     <h3>Login</h3>
-    <form ng-submit="login()">
-        <div>
-            <h3>Email</h3>
-            <input type="text" ng-model="email"/>
+    <form name="loginForm" ng-submit="login()" novalidate >
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" ng-model="email"  ng-class="{'has-error': loginForm.email.$invalid}" required >
+            <div ng-messages="loginForm.email.$error" ng-if="loginForm.email.$dirty && loginForm.$submitted" role="alert">
+                <div ng-message="required">Required</div>
+                <div ng-message="email">Invalid Email</div>
+            </div>
         </div>
-        <div>
-            <h3>Password</h3>
-            <input type="text" ng-model="password"/>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" ng-model="password" ng-pattern="/^[A-Za-z0-9]{8,}$/"  ng-class="{'has-error': loginForm.password.$invalid}" required >
+            <div ng-messages="loginForm.password.$error" ng-if="loginForm.password.$dirty && loginForm.$submitted" role="alert">
+                <div ng-message="required">Required</div>
+                <div ng-message="pattern">Invalid Password (8 alphanumeric)</div>
+            </div>
         </div>
-        <input class="btn-primary" type="submit" value="Login"/>
+        <input class="btn btn-primary pull-right" type="submit" value="Login">
     </form>
+    <a ng-href="#/register">Do not have an account?</a>
 </div>

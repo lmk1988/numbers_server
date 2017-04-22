@@ -19,6 +19,6 @@
 
     "Security" : {
         "accessTokenLen"  : 200,
-        "refreshTokenLen" : 200,
+        "refreshTokenLen" : 200
     }
 }

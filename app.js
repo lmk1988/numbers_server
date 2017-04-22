@@ -11,11 +11,13 @@ global.rootRequire = function(name) {
 const config        = require("config");
 const express       = require("express");
 const winston       = require("winston");
+const io            = require("socket.io");
 const app           = express();
 
 const middlewares   = rootRequire("app_modules/middlewares");
 const api           = rootRequire("app_modules/api");
 const database      = rootRequire("app_modules/components/database");
+
 
 const SERVER_CONFIG = config.get("Server");
 if(!SERVER_CONFIG){

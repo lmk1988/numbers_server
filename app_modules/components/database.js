@@ -2,7 +2,7 @@
 
 const config    = require("config");
 const Promise   = require("bluebird");
-const sequelize = require("sequelize");
+const Sequelize = require("sequelize");
 
 /**
  * @return {Object} Sequelize object which is used to interact with database
