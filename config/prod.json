@@ -1,8 +1,8 @@
 {
     "Server" : {
-        "url"       : "localhost",
+        "url"       : "phone-booth.azurewebsites.net",
         "port"      : 1337,
-        "hostName"  : "localhost"
+        "hostName"  : "phone-booth.azurewebsites.net"
     },
 
     "Database" : {
