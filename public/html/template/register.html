@@ -19,7 +19,7 @@
         </div>
         <div class="form-group">
             <label>Confirm Password</label>
-            <input type="password" name="confirm_password" class="form-control" ng-model="confirm_password" ng-pattern="password|escapeRegex"  ng-class="{'has-error': registerForm.confirm_password.$invalid}" required >
+            <input type="password" name="confirm_password" class="form-control" ng-model="confirm_password" ng-pattern="{{password}}"  ng-class="{'has-error': registerForm.confirm_password.$invalid}" required >
             <div ng-messages="registerForm.confirm_password.$error" ng-if="registerForm.confirm_password.$dirty && registerForm.$submitted" role="alert">
                 <div ng-message="required">Required</div>
                 <div ng-message="pattern">Password not the same</div>

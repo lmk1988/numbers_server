@@ -1,7 +1,11 @@
 
 var app = angular.module('app', ['ngRoute', 'ngMessages']);
 
-app.config(function($routeProvider) {
+app.config(function($locationProvider, $routeProvider) {
+
+    //Fix route issue
+    $locationProvider.hashPrefix('');
+
     $routeProvider
     .when('/login', {
         templateUrl : '/html/template/login.html'
@@ -12,6 +16,7 @@ app.config(function($routeProvider) {
     .otherwise({
         redirectTo : '/login'
     });
+
 });
 
 app.controller('loginCtrl', function($scope, $http, $location) {
