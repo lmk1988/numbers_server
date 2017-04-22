@@ -32,7 +32,7 @@ if(!SERVER_CONFIG){
         app.use("/api", api);
         app.use('/', express.static(__dirname + '/public'));
 
-        app.listen(SERVER_CONFIG.port, function () {
+        app.listen(process.env.port || SERVER_CONFIG.port, function () {
             winston.info("app listening on port: "+SERVER_CONFIG.port)
         })
     })
