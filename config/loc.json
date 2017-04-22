@@ -10,7 +10,8 @@
         "user"      : "test_user",
         "password"  : "qwerty123",
         "host"      : "localhost",
-        "port"      : 3306
+        "port"      : 3306,
+        "dialect"   : "mysql"
     },
 
     "Password" : {

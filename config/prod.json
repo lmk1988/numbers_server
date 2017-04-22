@@ -6,11 +6,14 @@
     },
 
     "Database" : {
-        "name"      : "phone_booth_database",
-        "user"      : "test_user",
-        "password"  : "qwerty123",
-        "host"      : "localhost",
-        "port"      : 3306
+        "name"              : "phone_booth_database",
+        "user"              : "broccoli",
+        "password"          : "OMG!vege",
+        "host"              : "phone-booth.database.windows.net",
+        "dialect"           : "mssql",
+        "dialectOptions"    : {
+            "encrypt" : true
+        }
     },
 
     "Password" : {

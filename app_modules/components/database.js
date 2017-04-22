@@ -12,15 +12,23 @@ function createSequelizeDatabaseConnection(){
     const databaseConfig = config.get('Database');
 
     const sequelizeOption = {
-        dialect : 'mysql',
+        dialect : databaseConfig.dialect,
         host : databaseConfig.host,
-        port : databaseConfig.port,
         logging : false,
         timezone : '+00:00',
         define : {
             freezeTableName: true
         }
     };
+
+    //Extra unique configurations
+    if(databaseConfig.port){
+        sequelizeOption.port = databaseConfig.port
+    }
+
+    if(databaseConfig.dialectOptions){
+        sequelizeOption.dialectOptions = databaseConfig.dialectOptions
+    }
     
     //parameters to connect to the database
     return new Sequelize(databaseConfig.name,
