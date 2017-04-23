@@ -19,7 +19,7 @@ app.config(function($locationProvider, $routeProvider) {
 
 });
 
-app.controller('loginCtrl', function($scope, $http, $location, ModalHelper) {
+app.controller('loginCtrl', function($scope, $http, $window, ModalHelper) {
 
     $scope.email = "";
     $scope.password = "";
@@ -48,7 +48,8 @@ app.controller('loginCtrl', function($scope, $http, $location, ModalHelper) {
                 ModalHelper.closeLoadingModel();
 
                 if(response.data && response.data.access_token){
-                    //TODO take access token to login to main
+                    //Take access token to login to main
+                    $window.location.href = "/main?access_token="+response.data.access_token;
                 }else{
                     throw new Error("unhandled response");
                 }
