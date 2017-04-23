@@ -29,16 +29,25 @@ if(!SERVER_CONFIG){
     .then(function(){
 
         winston.info("database connection validated");
-
-        app.set('view engine', 'ejs');
-
         app.use(bodyParser.urlencoded({ extended: true }));
         app.use(bodyParser.json({limit: '5mb'}));
+
+        if(SERVER_CONFIG.forceHTTPS){
+            //Force https
+            app.use(function(req, res, next){
+                if(!req.secure && req.get("x-forwarded-proto") !== "https"){
+                    res.redirect("https://" + req.get("host") + req.url);
+                }else{
+                    next();
+                }
+            });
+        }
         app.all('/oauth/token', app.oauth.grant());
         app.use(middlewares);
         app.use("/api", api);
         app.use('/', express.static(__dirname + '/public'));
         app.use(app.oauth.errorHandler());
+
         //TODO test
         app.use(function(req, res, next){
             winston.info("uncaught request", req.path, req.originalUrl);

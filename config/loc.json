@@ -1,8 +1,9 @@
 {
     "Server" : {
-        "url"       : "localhost",
-        "port"      : 3000,
-        "hostName"  : "localhost"
+        "url"           : "localhost",
+        "port"          : 3000,
+        "hostName"      : "localhost",
+        "forceHTTPS"    : false
     },
 
     "Database" : {

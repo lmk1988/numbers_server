@@ -1,8 +1,9 @@
 {
     "Server" : {
-        "url"       : "phone-booth.azurewebsites.net",
-        "port"      : 1337,
-        "hostName"  : "phone-booth.azurewebsites.net"
+        "url"           : "phone-booth.azurewebsites.net",
+        "port"          : 1337,
+        "hostName"      : "phone-booth.azurewebsites.net",
+        "forceHTTPS"    : true
     },
 
     "Database" : {
