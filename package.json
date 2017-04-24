@@ -15,6 +15,7 @@
     "oauth2-server": "^2.4.1",
     "sendgrid": "^5.0.0",
     "sequelize": "^3.30.4",
+    "serve-favicon": "^2.4.2",
     "uuid": "^3.0.1",
     "validator": "^7.0.0",
     "winston": "^2.3.1"

@@ -29,6 +29,7 @@ if(!SERVER_CONFIG){
     .then(function(){
 
         winston.info("database connection validated");
+        app.use(favicon(__dirname + "/public/img/favicon.ico"));
         app.use(bodyParser.urlencoded({ extended: true }));
         app.use(bodyParser.json({limit: '5mb'}));
 
