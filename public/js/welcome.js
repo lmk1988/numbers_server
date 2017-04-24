@@ -13,6 +13,9 @@ app.config(function($locationProvider, $routeProvider) {
     .when('/register', {
         templateUrl : '/html/template/register.html'
     })
+    .when('/forgotpassword', {
+        templateUrl : '/html/template/forgot_password.html'
+    })
     .otherwise({
         redirectTo : '/login'
     });
@@ -122,4 +125,42 @@ app.controller('registerCtrl', function($scope, $http, $location, ModalHelper) {
             //Not required to show modal
         }
     };
+});
+
+app.controller("forgotPasswordCtrl", function($scope, $http, $location, ModalHelper) {
+    $scope.email = "";
+
+    $scope.forgotPassword = function(){
+        $scope.email = $scope.email.trim();
+
+        if($scope.email){
+            //Overlay loading modal
+            ModalHelper.showLoadingModal();
+
+            var data = {
+                email : $scope.email
+            };
+
+            $http.post('api/users/reset_password', data)
+            .then(function successCallback(response) {
+                ModalHelper.closeLoadingModel();
+
+                ModalHelper.showOKModal($scope, "Reset Password", "An email has been sent for you to reset your password");
+            })
+            .catch(function(err){
+                ModalHelper.closeLoadingModel();
+
+                if(err && err.status == 404){
+                    ModalHelper.showOKModal($scope, "Reset Password", "Email does not exist, please register")
+                    .closePromise
+                    .then(function(){
+                        //Switch Route to register when pressed ok
+                        $location.path('/register')
+                    });
+                }else{
+                    ModalHelper.showOKModal($scope, "Reset Password", "Reset Password Error, please try again");
+                }
+            });
+        }
+    }
 });
