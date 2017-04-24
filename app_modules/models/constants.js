@@ -5,6 +5,7 @@ const TABLES = {
     USER_PASSWORD           : "user_password",
     USER_ACCESS             : "user_access",
     USER_REFRESH            : "user_refresh",
+    USER_RESET_PASSWORD     : "user_reset_password",
     USER_PHONE_BOOTH        : "user_phone_booth",
     USER_PHONE_BOOTH_EXTRA  : "user_phone_booth_extra"
 };
@@ -20,6 +21,9 @@ const FIELDS = {
     REFRESH_ID              : "refresh_id",
     REFRESH_TOKEN           : "refresh_token",
     REFRESH_EXPIRY          : "refresh_expiry",
+    RESET_PASSWORD_ID       : "reset_password_id",
+    RESET_PASSWORD_TOKEN    : "reset_password_token",
+    RESET_PASSWORD_EXPIRY   : "reset_password_expiry",
     PHONE_BOOTH_ID          : "phone_booth_id",
     IMG_URL                 : "img_url",
     CONTACT_NUM             : "contact_num",
