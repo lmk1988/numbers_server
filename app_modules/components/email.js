@@ -1,16 +1,15 @@
 "use strict";
 
-const Promise = require("bluebird");
-const winston = require("winston");
-const helper = require("sendgrid").mail
+const Promise   = require("bluebird");
+const winston   = require("winston");
+const helper    = require("sendgrid").mail
+const fs        = require("fs");
+const ejs       = require("ejs");
 
-const sg;
-if(process.env.SENDGRID_API_KEY){
-    sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
-}else{
-    //Unconfigured sendgrid API (non-prod)
-    sg = null;
-}
+const promiseReadFile = Promise.promisify(fs.readFile);
+
+//Unconfigured sendgrid API (non-prod)
+const sg = process.env.SENDGRID_API_KEY?require('sendgrid')(process.env.SENDGRID_API_KEY):null;
 
 const from_email = new helper.Email("no-reply@phone-booth.azurewebsites.net");
 
@@ -48,4 +47,35 @@ function sendEmail(email, subject, body){
     }
 }
 
-exports.sendEmail = sendEmail;
+/**
+ * Generate template for reset password confirmation
+ * @param {String} email
+ * @param {String} url url for server to register confirmation
+ */
+function templateResetPasswordConfirm(email, url){
+    return promiseReadFile('private/email_template/reset_password_confirm.ejs', 'utf8')
+    .then(function(file){
+        return ejs.render(file, {
+            email : email,
+            url : url
+        });
+    });
+}
+
+/**
+ * Generate template for generation of new password
+ * @param {String} email
+ * @param {String} new_password new generated password
+ */
+function templateGeneratePassword(email, new_password){
+    return promiseReadFile('private/email_template/generate_password.ejs', 'utf8')
+    .then(function(file){
+        return ejs.render(file, {
+            email : email,
+            new_password : new_password
+        });
+    });
+}
+
+exports.sendEmail                       = sendEmail;
+exports.templateResetPasswordConfirm    = templateResetPasswordConfirm;

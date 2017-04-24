@@ -35,21 +35,36 @@ function registerUser(name, email, password){
 }
 
 /**
- * Checks if a user with the given email already exist
+ * Retrieve userID with the given email
  * @param {String} email 
+ * @returns {Promise<Integer>} returns userID if email exist, else returns null
  */
-function checkIfAccountExist(email){
-    return UserInfo.MODEL.findOne({ 
+function getUserIDOfEmail(email){
+    return UserInfo.MODEL.findOne({
         where : {
             [CONSTANTS.FIELDS.EMAIL] : email
-        }
-    }).then(function(userInfoInstance){
-        if(userInfoInstance){
-            return true;
-        }else{
-            return false;
-        }
+        },
+        attributes : [CONSTANTS.FIELDS.USER_ID]
     })
+    .then(function(userInfoInstance){
+        if(userInfoInstance){
+            return userInfoInstance.get(CONSTANTS.FIELDS.USER_ID);
+        }else{
+            return null;
+        }
+    });
+}
+
+/**
+ * Checks if a user with the given email already exist
+ * @param {String} email
+ * @returns {Promise<Boolean>} true if email exist
+ */
+function checkIfAccountExist(email){
+    return getUserIDOfEmail(email)
+    .then(function(userID){
+        return userID != null;
+    });
 }
 
 /**
@@ -117,7 +132,30 @@ function validateUserPassword(email, password){
     });
 }
 
+/**
+ * Retrieves email of the given userID
+ * @param {Integer} userID
+ * @returns {Promise<String>} returns email or null if invalid userID
+ */
+function getEmailOfUserID(userID){
+    return UserInfo.MODEL.findOne({
+        where : {
+            [CONSTANTS.FIELDS.USER_ID] : userID
+        },
+        attributes : [CONSTANTS.FIELDS.EMAIL]
+    })
+    .then(function(userInfoInstance){
+        if(userInfoInstance){
+            return userInfoInstance.get(CONSTANTS.FIELDS.EMAIL);
+        }else{
+            return null;
+        }
+    });
+}
+
 exports.registerUser            = registerUser;
+exports.getUserIDOfEmail        = getUserIDOfEmail;
 exports.checkIfAccountExist     = checkIfAccountExist;
 exports.setNewUserPassword      = setNewUserPassword;
 exports.validateUserPassword    = validateUserPassword;
+exports.getEmailOfUserID        = getEmailOfUserID;

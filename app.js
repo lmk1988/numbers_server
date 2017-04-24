@@ -34,6 +34,8 @@ if(!SERVER_CONFIG){
         app.use(bodyParser.urlencoded({ extended: true }));
         app.use(bodyParser.json({limit: '5mb'}));
 
+        app.set("view engine", "ejs");
+
         if(SERVER_CONFIG.forceHTTPS){
             //Force https
             app.use(function(req, res, next){
