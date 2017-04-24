@@ -1,14 +1,17 @@
 
 var app = angular.module('app', ['ngRoute', 'ngMessages', 'ngDialog']);
 
-var access_key = "";
-
-app.config(function($locationProvider, $location) {
+app.config(function($locationProvider) {
 
     //Fix route issue
     $locationProvider.hashPrefix('');
 
-    //Grab hash
-    access_key = $location.hash();
+});
+
+app.service('accessService', function(){
+    //Grab access token from url and hide it
+    this.access_token = $location.search().access_token;
+    $location.search({});
+});
 
 });
