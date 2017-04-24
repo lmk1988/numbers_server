@@ -12,6 +12,7 @@ const config            = require("config");
 const express           = require("express");
 const winston           = require("winston");
 const bodyParser        = require('body-parser');
+const favicon           = require("serve-favicon");
 const app               = express();
 
 const middlewares   = rootRequire("app_modules/middlewares");
