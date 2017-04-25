@@ -6,7 +6,7 @@ function easy_response(req, res, next){
     //Attach functions for easy usage
 
     res.easy_success = function(data){
-        res.status(200).json({ status : "success" , data : data });
+        res.status(200).json({ status : "success" , data : data || {} });
     }
 
     res.easy_invalid = function(msg){
