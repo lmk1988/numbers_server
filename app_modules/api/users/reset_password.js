@@ -27,14 +27,14 @@ function resetPassword(req, res){
                 })
                 .catch(function(err){
                     winston.error("reset password error", err, req.body);
-                    res.status(500).json({ error : "server error" });
+                    res.easy_error();
                 });
             }else{
-                res.status(403).json({ msg : "email does not exist" });
+                res.easy_forbidden("email does not exist");
             }
         });
     }else{
-        res.status(400).json({ msg : "invalid fields" });
+        res.easy_invalid();
     }
 }
 

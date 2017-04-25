@@ -14,7 +14,7 @@ function register(req, res){
         USER.checkIfAccountExist(email)
         .then(function(exist){
             if(exist){
-                res.status(409).json({ msg : "email already exist" });
+                res.easy_conflict("email already exist");
             }else{
                 //Valid emails must contain @ (which we have validated)
                 const atIndex = email.indexOf("@");
@@ -24,16 +24,16 @@ function register(req, res){
                 USER.registerUser(name, email, password)
                 .then(function(){
                     winston.info("registered new user: "+email);
-                    res.status(200).json({ email : email });
+                    res.easy_success({ email : email });
                 })
                 .catch(function(err){
                     winston.error("register error", err, req.body);
-                    res.status(500).json({ error : "server error" });
+                    res.easy_error();
                 });
             }
         });
     }else{
-        res.status(400).json({ msg : "invalid fields" });
+        res.easy_invalid();
     }
 }
 
