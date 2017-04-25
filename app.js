@@ -53,6 +53,7 @@ if(!SERVER_CONFIG){
                 }
             });
         }
+        app.use(middlewares.easyResponse);
         app.all("/oauth/token", app.oauth.grant());
         app.use(middlewares.route);
         app.use("/api", api);
