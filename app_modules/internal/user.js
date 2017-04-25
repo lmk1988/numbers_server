@@ -153,9 +153,39 @@ function getEmailOfUserID(userID){
     });
 }
 
+function getJSONUserProfile(userID){
+    return UserInfo.MODEL.findOne({
+        where : {
+            [CONSTANTS.FIELDS.USER_ID] : userID
+        },
+        attributes : [CONSTANTS.FIELDS.EMAIL, CONSTANTS.FIELDS.NAME]
+    })
+    .then(function(userInfoInstance){
+        if(userInfoInstance){
+            return userInfoInstance.toJSON();
+        }else{
+            return null;
+        }
+    });
+}
+
+function setUserProfile(userID, name){
+    //Currently we can only change the name
+    return UserInfo.MODEL.update({
+        [CONSTANTS.FIELDS.NAME] : name
+    },
+    {
+        where : {
+            [CONSTANTS.FIELDS.USER_ID] : userID
+        },
+    });
+}
+
 exports.registerUser            = registerUser;
 exports.getUserIDOfEmail        = getUserIDOfEmail;
 exports.checkIfAccountExist     = checkIfAccountExist;
 exports.setNewUserPassword      = setNewUserPassword;
 exports.validateUserPassword    = validateUserPassword;
 exports.getEmailOfUserID        = getEmailOfUserID;
+exports.getJSONUserProfile      = getJSONUserProfile;
+exports.setUserProfile          = setUserProfile;
