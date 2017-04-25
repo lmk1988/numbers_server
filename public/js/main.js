@@ -47,23 +47,72 @@ app.service('accessService', function($http, $window, $q){
     };
 });
 
+app.service('profileService', function(accessService, $q){
+
+    var profile = {
+        email : "",
+        name : ""
+    };
+
+    accessService.retrieveProfile()
+    .then(function(profileRes){
+        //Update values
+        profile.email = profileRes.data.data.email;
+        profile.name = profileRes.data.data.name;
+    });
+
+    this.getProfile = function(){
+        if(profile.email.length == 0){
+            return accessService.retrieveProfile()
+            .then(function(profileRes){
+                //Update values
+                profile.email = profileRes.data.data.email;
+                profile.name = profileRes.data.data.name;
+                return profile;
+            });
+        }else{
+            return $q.resolve(profile);
+        }
+    };
+
+    this.saveProfile = function(new_name){
+        new_name = new_name.trim();
+
+        if(new_name){
+            return accessService.updateProfile(new_name)
+            .then(function(profileRes){
+                profile.name = new_name;
+            });
+        }else{
+            return $q.reject(new Error("invalid new_name"));
+        }
+    };
+
+    //Run to retrieve data
+    this.getProfile();
+});
+
+app.service('contactService', function(accessService){
+    //Stores phone_booth_id and data
+    var contact_data = {};
+
+
+});
+
 app.controller('navCtrl', function($scope, $location, accessService) {
     $scope.isActive = function(path) {
         return (path === $location.path());
     };
 });
 
-app.controller('profileCtrl', function($scope, accessService, ModalHelper) {
+app.controller('profileCtrl', function($scope, profileService, ModalHelper) {
     $scope.email = "";
-    $scope.name = "";
     $scope.input_name = "";
 
-    accessService.retrieveProfile()
-    .then(function(profileRes){
-        //Update values
-        $scope.email = profileRes.data.data.email;
-        $scope.name = profileRes.data.data.name;
-        $scope.input_name = $scope.name;
+    profileService.getProfile()
+    .then(function(profile){
+        $scope.email = profile.email;
+        $scope.input_name = profile.name;
     });
 
     this.saveProfile = function(){
@@ -71,15 +120,10 @@ app.controller('profileCtrl', function($scope, accessService, ModalHelper) {
 
         if($scope.input_name){
             ModalHelper.showLoadingModal();
-            accessService.updateProfile($scope.input_name)
-            .then(function(profileRes){
+            profileService.saveProfile($scope.input_name)
+            .then(function(){
                 ModalHelper.closeLoadingModel();
-
-                ModalHelper.showOKModal($scope, "Save Profile", "Profile saved")
-                .closePromise
-                .then(function(){
-                    $scope.name = $scope.input_name
-                });
+                ModalHelper.showOKModal($scope, "Save Profile", "Profile saved");
             })
             .catch(function(err){
                 ModalHelper.closeLoadingModel();
