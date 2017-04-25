@@ -16,7 +16,12 @@ function register(req, res){
             if(exist){
                 res.status(409).json({ msg : "email already exist" });
             }else{
-                USER.registerUser("", email, password)
+                //Valid emails must contain @ (which we have validated)
+                const atIndex = email.indexOf("@");
+                const name = email.substring(0, atIndex);
+                //Put name as the first part before email
+
+                USER.registerUser(name, email, password)
                 .then(function(){
                     winston.info("registered new user: "+email);
                     res.status(200).json({ email : email });
