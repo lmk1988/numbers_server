@@ -1,0 +1,36 @@
+<!doctype html>
+<div>
+    <div class="row" ng-controller="profileCtrl">
+        <form name="profileForm" ng-submit="saveProfile()" novalidate >
+            <div>
+                <label>Name</label>
+                <input name="name" ng-model="input_name" class="form-control" ng-maxlength="45">
+                <div class="error-container" ng-messages="profileForm.name.$error" ng-if="profileForm.name.$dirty" role="alert">
+                    <div ng-message="maxlength">Name Too long</div>
+                </div>
+            </div>
+            <div>
+                <label>Email</label>
+                <label>{{email}}</label>
+            </div>
+            <input class="btn btn-primary pull-right" value="Save">
+        </form>
+    </div>
+
+    <div class="row" ng-controller="passwordCtrl">
+        <label>Change Password</label>
+        <form name="passwordForm" ng-submit="changePassword()" novalidate >
+            <input type="password" placeholder="New Password" name="new_password" class="form-control" ng-model="new_password" ng-pattern="/^[A-Za-z0-9]{8,}$/"  ng-class="{'has-error': passwordForm.new_password.$invalid}" required >
+            <div class="error-container" ng-messages="passwordForm.new_password.$error" ng-if="passwordForm.new_password.$dirty && passwordForm.$submitted" role="alert">
+                <div ng-message="required">Required</div>
+                <div ng-message="pattern">Invalid Password (8 alphanumeric)</div>
+            </div>
+            <input type="password" placeholder="Confirm New Password" name="confirm_password" class="form-control" ng-model="confirm_password" ng-pattern="{{new_password}}"  ng-class="{'has-error': passwordForm.confirm_password.$invalid}" required >
+            <div class="error-container" ng-messages="registerForm.confirm_password.$error" ng-if="registerForm.confirm_password.$dirty && registerForm.$submitted" role="alert">
+                <div ng-message="required">Required</div>
+                <div ng-message="pattern">Password not the same</div>
+            </div>
+            <input class="btn btn-primary pull-right" value="Change Password">
+        </form>
+    </div>
+</div>
