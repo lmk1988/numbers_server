@@ -15,19 +15,44 @@ function resForbiddened(res){
     res.status(403).json({ msg : "Forbiddened" });
 }
 
+function resError(res){
+    res.status(500)({ msg : "Server Error" });
+}
+
 router.get("/main", function(req, res){
     if(req.query && req.query.access_token){
-        TOKEN.isAccessTokenValid(req.query.access_token)
+        //Convert access token to Session
+        const access_token = req.query.access_token;
+
+        TOKEN.isAccessTokenValid(access_token)
         .then(function(bol_valid){
             if(bol_valid){
+                //Store access token into session
+                req.session.access_token = access_token;
+                res.redirect("/main");
+            }else{
+                resForbiddened(res);
+            }
+        })
+        .catch(function(err){
+            winston.error("middleware /main token error", err);
+            resError(res);
+        });
+    }else if(req.session && req.session.access_token){
+        //Session access
+
+        TOKEN.isAccessTokenValid(req.session.access_token)
+        .then(function(bol_valid){
+            if(bol_valid){
+                //Render main html
                 res.sendFile(path.join(process.cwd() + '/private/html/main.html'));
             }else{
                 resForbiddened(res);
             }
         })
         .catch(function(err){
-            winston.error("middleware /main error", err);
-            res.status(500)({ msg : "Server Error" });
+            winston.error("middleware /main session error", err);
+            resError(res);
         });
     }else{
         resForbiddened(res);
@@ -68,10 +93,29 @@ router.get("/reset_password", function(req, res){
         })
         .catch(function(err){
             winston.error("middleware /reset_password error", err);
-            res.status(500)({ msg : "Server Error" });
+            resError(res);
         });
     }else{
         resForbiddened(res);
+    }
+});
+
+router.get("/logout", function(req, res){
+    if(req.session && req.session.access_token){
+        TOKEN.removeAccessToken(req.session.access_token)
+        .then(function(){
+            return Promise.promisify(req.session.destroy)()
+        })
+        .then(function(){
+            res.redirect("/");
+        })
+        .catch(function(err){
+            winston.error("middleware /logout error", err);
+            resError(res);
+        });
+    }else{
+        //Nothing to logout from
+        res.redirect("/");
     }
 });
 

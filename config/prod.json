@@ -3,7 +3,8 @@
         "url"           : "phone-booth.azurewebsites.net",
         "port"          : 1337,
         "hostName"      : "phone-booth.azurewebsites.net",
-        "forceHTTPS"    : false
+        "forceHTTPS"    : false,
+        "sessionKey"    : "93406u32hnkjn"
     },
 
     "Database" : {

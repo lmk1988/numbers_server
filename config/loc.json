@@ -3,7 +3,8 @@
         "url"           : "localhost",
         "port"          : 3000,
         "hostName"      : "localhost:3000",
-        "forceHTTPS"    : false
+        "forceHTTPS"    : false,
+        "sessionKey"    : "orginjaewtlwqna89a"
     },
 
     "Database" : {

@@ -11,7 +11,8 @@ global.rootRequire = function(name) {
 const config            = require("config");
 const express           = require("express");
 const winston           = require("winston");
-const bodyParser        = require('body-parser');
+const bodyParser        = require("body-parser");
+const session           = require("express-session");
 const favicon           = require("serve-favicon");
 const app               = express();
 
@@ -31,6 +32,12 @@ if(!SERVER_CONFIG){
 
         winston.info("database connection validated");
         app.use(favicon(__dirname + "/public/img/favicon.ico"));
+
+        app.use(session({
+            secret: SERVER_CONFIG.sessionKey,
+            resave: false,
+            saveUninitialized: true
+        }));
         app.use(bodyParser.urlencoded({ extended: true }));
         app.use(bodyParser.json({limit: '5mb'}));
 
