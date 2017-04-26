@@ -20,6 +20,8 @@ function getAllPhoneBooth(req, res){
                     phoneBoothExtraJSONArr.push(phoneBoothExtraInstance.toJSON());
                 });
                 phoneBoothJSON[CONSTANTS.VIRTUAL_FIELDS.PHONE_BOOTH_EXTRA_ARR] = phoneBoothExtraJSONArr;
+
+                return phoneBoothJSON;
             })
         })
         .then(function(jsonData){
