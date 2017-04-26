@@ -1,4 +1,4 @@
-app.service('ModalHelper', function(ngDialog){
+app.service('ModalHelper', function(ngDialog, $timeout){
     this.showOKModal = function(scope, title, body){
 
         var childScope = scope.$new();
@@ -29,7 +29,8 @@ app.service('ModalHelper', function(ngDialog){
 
     this.closeLoadingModel = function(){
         if(currentLoadingDialog){
-            currentLoadingDialog.close();
+            //Do not close dialog immediately, will cause crash
+            $timeout(currentLoadingDialog.close, 100);
             currentLoadingDialog = null;
         }
     }
