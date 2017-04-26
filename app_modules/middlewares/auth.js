@@ -8,9 +8,16 @@ function middlewareAttachSessionAccessToken(req, res, next){
     if(req.session && req.session.access_token){
         const access_token = req.session.access_token;
         if(req.method == "POST" || req.method == "PUT" || req.method == "DELETE"){
-            if(req.body && !req.body.access_token){
-                //Attach session access_token to body for oauth to verify
-                req.body.access_token = access_token;
+            if(req.body && !req.body.access_token && !req.get("Authorization")){
+                //Attach session access_token to header for oauth to verify
+                var override = req.get
+                req.get = function(header){
+                    if(header == "Authorization"){
+                        return "Bearer "+access_token;
+                    }else{
+                        return override(header);
+                    }
+                };
             }
         }else if(req.method == "GET"){
             if(req.query && !req.query.access_token){
