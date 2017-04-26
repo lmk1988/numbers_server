@@ -41,7 +41,7 @@ function main(req, res){
             res.easy_error();
         });
     }else{
-        res.easy_forbidden();
+        res.redirect("/");
     }
 }
 
