@@ -23,11 +23,11 @@ function getAllPhoneBooth(req, res){
             })
         })
         .then(function(jsonData){
-            req.easy_success({ [CONSTANTS.VIRTUAL_FIELDS.PHONE_BOOTH_ARR] : jsonData });
+            res.easy_success({ [CONSTANTS.VIRTUAL_FIELDS.PHONE_BOOTH_ARR] : jsonData });
         })
-        .catch(function(){
+        .catch(function(err){
             winston.error("get all phone booth error: ", err);
-            req.easy_error();
+            res.easy_error();
         });
     }
 }

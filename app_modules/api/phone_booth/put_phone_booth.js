@@ -42,11 +42,11 @@ function putPhoneBooth(req, res){
         }else{
             PHONE_BOOTH.updatePhoneBooth(req.user.id, req.params.phone_booth_id, updateData)
             .then(function(){
-                req.easy_success();
+                res.easy_success();
             })
             .catch(function(err){
                 winston.error("put phone booth error: ", err);
-                req.easy_error();
+                res.easy_error();
             });
         }
     }

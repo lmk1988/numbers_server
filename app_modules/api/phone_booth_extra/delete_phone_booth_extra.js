@@ -17,13 +17,13 @@ function deletePhoneBoothExtra(req, res){
             }else{
                 return PHONE_BOOTH.removePhoneBoothExtra(req.params.phone_booth_extra_id)
                 .then(function(){
-                    req.easy_success();
+                    res.easy_success();
                 });
             }
         })
         .catch(function(err){
             winston.error("delete phone booth extra error: ", err);
-            req.easy_error();
+            res.easy_error();
         });
     }
 }

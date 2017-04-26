@@ -40,8 +40,9 @@ const VIRTUAL_FIELDS = {
 };
 
 const CONSTANTS = {
-    "TABLES" : TABLES,
-    "FIELDS" : FIELDS
+    "TABLES"            : TABLES,
+    "FIELDS"            : FIELDS,
+    "VIRTUAL_FIELDS"    : VIRTUAL_FIELDS
 };
 
 module.exports = CONSTANTS;

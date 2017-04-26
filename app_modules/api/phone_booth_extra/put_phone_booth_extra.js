@@ -23,7 +23,7 @@ function putPhoneBoothExtra(req, res){
                 let bol_valid = true;
                 const updateData = {};
 
-                 if(name != null && _.isString(name) && name.length < 45){
+                if(name != null && _.isString(name) && name.length < 45){
                     updateData[CONSTANTS.FIELDS.NAME] = name;
                 }else{
                     bol_valid = false;
@@ -47,7 +47,7 @@ function putPhoneBoothExtra(req, res){
         })
         .catch(function(err){
             winston.error("put phone booth extra error: ", err);
-            req.easy_error();
+            res.easy_error();
         });
 
     }

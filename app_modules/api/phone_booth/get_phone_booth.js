@@ -24,12 +24,12 @@ function getPhoneBooth(req, res){
                 });
                 reply[CONSTANTS.VIRTUAL_FIELDS.PHONE_BOOTH_EXTRA_ARR] = phoneBoothExtraArr;
 
-                req.easy_success(reply);
+                res.easy_success(reply);
             }
         })
         .catch(function(){
             winston.error("get phone booth error: ", err);
-            req.easy_error();
+            res.easy_error();
         });
     }
 }

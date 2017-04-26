@@ -17,14 +17,14 @@ function postPhoneBooth(req, res){
         if(_.isString(name) && name.length < 45 && _.isString(contact_num) && contact_num.length < 30 && _.isString(contact_ext) && contact_ext/length < 10){
             PHONE_BOOTH.addPhoneBooth(req.user.id, name, contact_num, contact_ext)
             .then(function(phoneBoothInstance){
-                req.easy_success({ [CONSTANTS.FIELDS.PHONE_BOOTH_ID] : phoneBoothInstance.get(CONSTANTS.FIELDS.PHONE_BOOTH_ID) })
+                res.easy_success({ [CONSTANTS.FIELDS.PHONE_BOOTH_ID] : phoneBoothInstance.get(CONSTANTS.FIELDS.PHONE_BOOTH_ID) })
             })
             .catch(function(err){
                 winston.error("post phone booth error: ", err);
-                req.easy_error();
+                res.easy_error();
             });
         }else{
-            req.easy_invalid();
+            res.easy_invalid();
         }
     }
 }

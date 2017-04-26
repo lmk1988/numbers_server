@@ -23,16 +23,16 @@ function postPhoneBoothExtra(req, res){
                 if(_.isString(name) && name.length < 45 && _.isString(details) && details.length < 200){
                     return PHONE_BOOTH.addPhoneBoothExtra(req.params.phone_booth_extra_id)
                     .then(function(phoneBookExtraInstance){
-                        req.easy_success({ [CONSTANTS.FIELDS.PHONE_BOOTH_EXTRA_ID] : phoneBookExtraInstance.get(CONSTANTS.FIELDS.PHONE_BOOTH_EXTRA_ID) });
+                        res.easy_success({ [CONSTANTS.FIELDS.PHONE_BOOTH_EXTRA_ID] : phoneBookExtraInstance.get(CONSTANTS.FIELDS.PHONE_BOOTH_EXTRA_ID) });
                     });
                 }else{
-                    req.easy_invalid();
+                    res.easy_invalid();
                 }
             }
         })
         .catch(function(err){
             winston.error("post phone booth extra error: ", err);
-            req.easy_error();
+            res.easy_error();
         });
     }
 }
