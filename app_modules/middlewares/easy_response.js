@@ -13,6 +13,10 @@ function easy_response(req, res, next){
         res.status(400).json({ status : "fail", message : (msg || "Invalid Fields") });
     }
 
+    res.easy_not_found = function(msg){
+        res.status(404).json({ status : "fail", message : (msg || "Not Found") });
+    }
+
     res.easy_forbidden = function(msg){
         res.status(403).json({ status : "fail", message : (msg || "Forbiddened") });
     }

@@ -34,12 +34,12 @@ const TABLE_FIELDS = {
     },
 
     [CONSTANTS.FIELDS.CONTACT_NUM] : {
-        type : Sequelize.INTEGER.UNSIGNED,
+        type : Sequelize.STRING(30),
         allowNull : false
     },
 
     [CONSTANTS.FIELDS.CONTACT_EXT] : {
-        type : Sequelize.INTEGER.UNSIGNED,
+        type : Sequelize.STRING(10),
         allowNull : false
     },
 

@@ -35,6 +35,7 @@ const FIELDS = {
 };
 
 const VIRTUAL_FIELDS = {
+    PHONE_BOOTH_ARR         : "phone_booth",
     PHONE_BOOTH_EXTRA_ARR   : "phone_booth_extras"
 };
 

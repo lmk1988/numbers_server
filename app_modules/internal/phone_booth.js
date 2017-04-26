@@ -41,6 +41,32 @@ function addPhoneBooth(user_id, name, contact_num, contact_ext, imgURI){
     })
 }
 
+function removePhoneBooth(user_id, phone_booth_id){
+    return PhoneBooth.MODEL.destroy({
+        where : {
+            [CONSTANTS.FIELDS.USER_ID] : user_id,
+            [CONSTANTS.FIELDS.PHONE_BOOTH_ID] : phone_booth_id
+        }
+    });
+}
+
+function updatePhoneBooth(user_id, phone_booth_id, data){
+    return PhoneBooth.MODEL.update(data,{
+        where : {
+            [CONSTANTS.FIELDS.USER_ID] : user_id,
+            [CONSTANTS.FIELDS.PHONE_BOOTH_ID] : phone_booth_id
+        }
+    })
+    .spread(function(affectedCount, affectedRows){
+        if(affectedCount == 0){
+            return Promise.reject(new Error("updatePhoneBooth invalid phone_booth_id"));
+        }else{
+            //Nothing to return
+            return Promise.resolve();
+        }
+    });
+}
+
 /**
  * Adds extra details to phone booth data
  * @param {Integer} phone_booth_id 
@@ -72,14 +98,10 @@ function removePhoneBoothExtra(phone_booth_extra_id){
 /**
  * Modify phone booth extra data
  * @param {Integer} phone_booth_extra_id 
- * @param {String} name 
- * @param {String} details 
+ * @param {Object} data
  */
-function modifyPhoneBoothExtra(phone_booth_extra_id, name, details){
-    return PhoneBoothExtra.MODEL.update({
-        [CONSTANTS.FIELDS.NAME] : name,
-        [CONSTANTS.FIELDS.DETAILS] : details
-    },{
+function modifyPhoneBoothExtra(phone_booth_extra_id, data){
+    return PhoneBoothExtra.MODEL.update(data,{
         where : {
             [CONSTANTS.FIELDS.PHONE_BOOTH_EXTRA_ID] : phone_booth_extra_id
         }
@@ -111,13 +133,18 @@ function _getPhoneBoothExtraArrOfPhoneBooth(phone_booth_id, transaction){
 
 /**
  * Retrieve phone booth instance and phone booth extra instances under phone_booth_id
+ * @param {Integer} user_id
  * @param {Integer} phone_booth_id
  * @returns {Promise<[Instance, Array<Instance>]>} Returns phone booth instance and the array of phone booth extra instances inside an array.
  *                                                  Note that phone booth instance can be null
  */
-function getPhoneBoothData(phone_booth_id){
+function getPhoneBoothData(user_id, phone_booth_id){
     return sequelizeConnection.transaction(function (t) {
-        PhoneBooth.MODEL.findById(phone_booth_id, {
+        PhoneBooth.MODEL.findOne({
+            where : {
+                [CONSTANTS.FIELDS.USER_ID] : user_id,
+                [CONSTANTS.FIELDS.PHONE_BOOTH_ID] : phone_booth_id
+            },
             transaction : t
         })
         .then(function(phoneBoothInstance){
@@ -125,27 +152,101 @@ function getPhoneBoothData(phone_booth_id){
                 //Data not found
                 return Promise.resolve([null, []]);
             }else{
-                return _getPhoneBoothExtraArrOfPhoneBooth(phone_booth_id, t);
+                return Promise.all([
+                    Promise.solve(phoneBoothInstance),
+                    _getPhoneBoothExtraArrOfPhoneBooth(phone_booth_id, t)
+                ]);
             }
         })
     });
 }
 
 /**
- * 
- * @param {Array<Integer>} phone_booth_id_arr 
+ * @param {Integer} user_id
  * @returns {Promise<Array<[Instance, Array<Instance>]>>}
  */
-function getArrayOfPhoneBoothData(phone_booth_id_arr){
-    return Promise.map(phone_booth_id_arr, function(phone_booth_id){
-        return getPhoneBoothData(phone_booth_id);
+function getArrayOfPhoneBoothData(user_id){
+    return sequelizeConnection.transaction(function (t) {
+        return PhoneBooth.MODEL.findAll({
+            where : {
+                [CONSTANTS.FIELDS.USER_ID] : user_id
+            },
+            transaction : t
+        })
+        .then(function(phoneBoothInstanceArr){
+            return Promise.map(phoneBoothInstanceArr, function(phoneBoothInstance){
+                return Promise.all([
+                    Promise.resolve(phoneBoothInstance),
+                    _getPhoneBoothExtraArrOfPhoneBooth(phoneBoothInstance.get(CONSTANTS.FIELDS.PHONE_BOOTH_ID), t)
+                ]);
+            });
+        });
     });
+}
+
+function _checkUserOwnsPhoneBoothID(user_id, phone_booth_id){
+    return PhoneBooth.MODEL.findOne({
+        where : {
+            [CONSTANTS.FIELDS.USER_ID] : user_id,
+            [CONSTANTS.FIELDS.PHONE_BOOTH_ID] : phone_booth_id
+        },
+        attributes : [ CONSTANTS.FIELDS.PHONE_BOOTH_ID ]
+    })
+    .then(function(phoneBoothInstance){
+        if(phoneBoothInstance){
+            return true;
+        }else{
+            return false;
+        }
+    });
+}
+
+function _checkPhoneBoothIDOwnsPhoneBoothExtraID(phone_booth_id, phone_booth_extra_id){
+    return PhoneBoothExtra.MODEL.findOne({
+        where : {
+            [CONSTANTS.FIELDS.PHONE_BOOTH_ID] : phone_booth_id,
+            [CONSTANTS.FIELDS.PHONE_BOOTH_EXTRA_ID] : phone_booth_extra_id
+        },
+        attributes : [ CONSTANTS.FIELDS.PHONE_BOOTH_EXTRA_ID ]
+    })
+    .then(function(phoneBoothExtraInstance){
+        if(phoneBoothExtraInstance){
+            return true;
+        }else{
+            return false;
+        }
+    });
+}
+
+function checkValidOwnerShip(user_id, phone_booth_id, phone_booth_extra_id){
+    if(user_id != null && phone_booth_id != null){
+        if(phone_booth_extra_id != null){
+            return Promise.all([
+                _checkUserOwnsPhoneBoothID(user_id, phone_booth_id),
+                _checkPhoneBoothIDOwnsPhoneBoothExtraID(phone_booth_id, phone_booth_extra_id)
+            ])
+            .spread(function(bol_owner, bol_under){
+                if(bol_owner && bol_under){
+                    return true;
+                }else{
+                    return false;
+                }
+            });
+        }else{
+            return _checkUserOwnsPhoneBoothID(user_id, phone_booth_id);
+        }
+    }else{
+        return Promise.resolve(false);
+    }
 }
 
 exports.getUserPhoneBoothIDList     = getUserPhoneBoothIDList;
 exports.addPhoneBooth               = addPhoneBooth;
+exports.removePhoneBooth            = removePhoneBooth;
+exports.updatePhoneBooth            = updatePhoneBooth;
 exports.addPhoneBoothExtra          = addPhoneBoothExtra;
 exports.removePhoneBoothExtra       = removePhoneBoothExtra;
 exports.modifyPhoneBoothExtra       = modifyPhoneBoothExtra;
 exports.getPhoneBoothData           = getPhoneBoothData;
 exports.getArrayOfPhoneBoothData    = getArrayOfPhoneBoothData;
+exports.checkValidOwnerShip         = checkValidOwnerShip;
