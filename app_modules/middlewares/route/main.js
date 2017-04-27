@@ -15,7 +15,7 @@ function main(req, res){
             if(bol_valid){
                 //Store access token into session
                 req.session.access_token = access_token;
-                res.redirect("/main");
+                res.redirect("/main/");
             }else{
                 res.easy_forbidden();
             }
