@@ -9,7 +9,7 @@ const ejs       = require("ejs");
 const promiseReadFile = Promise.promisify(fs.readFile);
 
 //Unconfigured sendgrid API (non-prod)
-const sg = process.env.SENDGRID_API_KEY?require('sendgrid')(process.env.SENDGRID_API_KEY):null;
+const sg = process.env.SENDGRID_API_KEY?(require('sendgrid')(process.env.SENDGRID_API_KEY)):null;
 
 const from_email = new helper.Email("no-reply@phone-booth.azurewebsites.net");
 
@@ -34,9 +34,10 @@ function sendEmail(email, subject, body){
             body: mail.toJSON(),
         });
 
-        sg.API(request)
+        return sg.API(request)
         .then(function(response){
-            if(response && response.statusCode == 200){
+            //200 is valid but not queued to be delivered
+            if(response && response.statusCode == 202){
                 winston.info("sendEmail sent to : "+email);
                 return true;
             }else{
