@@ -14,7 +14,7 @@ function postPhoneBooth(req, res){
         const contact_num = req.body[CONSTANTS.FIELDS.CONTACT_NUM];
         const contact_ext = req.body[CONSTANTS.FIELDS.CONTACT_EXT];
 
-        if(_.isString(name) && name.length < 45 && _.isString(contact_num) && contact_num.length < 30 && _.isString(contact_ext) && contact_ext/length < 10){
+        if(_.isString(name) && name.length < 45 && _.isString(contact_num) && contact_num.length < 30 && _.isString(contact_ext) && contact_ext.length < 10){
             PHONE_BOOTH.addPhoneBooth(req.user.id, name, contact_num, contact_ext)
             .then(function(phoneBoothInstance){
                 res.easy_success({ [CONSTANTS.FIELDS.PHONE_BOOTH_ID] : phoneBoothInstance.get(CONSTANTS.FIELDS.PHONE_BOOTH_ID) })

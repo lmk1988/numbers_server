@@ -7,7 +7,7 @@ const PHONE_BOOTH   = rootRequire("app_modules/internal").PHONE_BOOTH;
 function deletePhoneBoothExtra(req, res){
     if(!req.user || !req.user.id){
         res.easy_forbidden();
-    }else if(!req.params || !req.params.phone_booth_id || !_.isInteger(req.params.phone_booth_id) || !req.params.phone_booth_extra_id || !_.isInteger(req.params.phone_booth_extra_id)){
+    }else if(!req.params || !req.params.phone_booth_id || isNaN(_.parseInt(req.params.phone_booth_id)) || !req.params.phone_booth_extra_id || isNaN(_.parseInt(req.params.phone_booth_extra_id))){
         res.easy_invalid();
     }else{
         return PHONE_BOOTH.checkValidOwnerShip(req.user.id, req.params.phone_booth_id, req.params.phone_booth_extra_id)

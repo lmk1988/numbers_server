@@ -7,7 +7,7 @@ const PHONE_BOOTH   = rootRequire("app_modules/internal").PHONE_BOOTH;
 function deletePhoneBooth(req, res){
     if(!req.user || !req.user.id){
         res.easy_forbidden();
-    }else if(!req.params || !req.params.phone_booth_id || !_.isInteger(req.params.phone_booth_id)){
+    }else if(!req.params || !req.params.phone_booth_id || isNaN(_.parseInt(req.params.phone_booth_id))){
         res.easy_invalid();
     }else{
         PHONE_BOOTH.removePhoneBooth(req.user.id, req.params.phone_booth_id)
