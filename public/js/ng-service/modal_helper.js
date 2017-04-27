@@ -11,7 +11,7 @@ app.service('ModalHelper', function(ngDialog, $timeout){
             scope       : childScope,
             showClose   : false
         });
-    }
+    };
 
     var currentLoadingDialog = null;
 
@@ -25,7 +25,7 @@ app.service('ModalHelper', function(ngDialog, $timeout){
                 closeByDocument : false,
             });
         }
-    }
+    };
 
     this.closeLoadingModel = function(){
         if(currentLoadingDialog){
@@ -33,5 +33,13 @@ app.service('ModalHelper', function(ngDialog, $timeout){
             $timeout(currentLoadingDialog.close, 100);
             currentLoadingDialog = null;
         }
-    }
+    };
+
+    this.showDeleteConfirmation = function(){
+        return ngDialog.openConfirm({
+            template    : '/html/template/modal_confirm_delete.html',
+            className   : 'ngdialog-theme-default',
+            showClose   : false
+        });
+    };
 });
