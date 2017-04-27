@@ -8,7 +8,11 @@ function logout(req, res){
     if(req.session && req.session.access_token){
         TOKEN.removeAccessToken(req.session.access_token)
         .then(function(){
-            return Promise.promisify(req.session.destroy)()
+            return new Promise(function(resolve){
+                req.session.destroy(function(){
+                    resolve();
+                });
+            });
         })
         .then(function(){
             res.redirect("/");
