@@ -1,36 +1,46 @@
 <!doctype html>
-<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
     <div class="row" ng-controller="profileCtrl">
         <form name="profileForm" ng-submit="saveProfile()" novalidate >
-            <div>
+            <div class="row">
                 <label>Name</label>
                 <input name="name" ng-model="input_name" class="form-control" ng-maxlength="45">
                 <div class="error-container" ng-messages="profileForm.name.$error" ng-if="profileForm.name.$dirty" role="alert">
                     <div ng-message="maxlength">Name Too long</div>
                 </div>
             </div>
-            <div>
-                <label>Email</label>
+            <div class="row">
+                <label style="margin-top : 5px">Email</label>
                 <label>{{email}}</label>
             </div>
-            <input class="btn btn-primary pull-right" value="Save">
+            <div class="row">
+                <input class="btn btn-primary pull-right" type="submit" value="Save">
+            </div>
         </form>
     </div>
 
     <div class="row" ng-controller="passwordCtrl">
-        <label>Change Password</label>
+        <div class="row">
+            <label>Change Password</label>
+        </div>
         <form name="passwordForm" ng-submit="changePassword()" novalidate >
-            <input type="password" placeholder="New Password" name="new_password" class="form-control" ng-model="new_password" ng-pattern="/^[A-Za-z0-9]{8,}$/"  ng-class="{'has-error': passwordForm.new_password.$invalid}" required >
-            <div class="error-container" ng-messages="passwordForm.new_password.$error" ng-if="passwordForm.new_password.$dirty && passwordForm.$submitted" role="alert">
-                <div ng-message="required">Required</div>
-                <div ng-message="pattern">Invalid Password (8 alphanumeric)</div>
+            <div class="row">
+                <input type="password" placeholder="New Password" name="new_password" class="form-control" ng-model="new_password" ng-pattern="/^[A-Za-z0-9]{8,}$/"  ng-class="{'has-error': passwordForm.new_password.$invalid}" required >
+                <div class="error-container" ng-messages="passwordForm.new_password.$error" ng-if="passwordForm.new_password.$dirty && passwordForm.$submitted" role="alert">
+                    <div ng-message="required">Required</div>
+                    <div ng-message="pattern">Invalid Password (8 alphanumeric)</div>
+                </div>
             </div>
-            <input type="password" placeholder="Confirm New Password" name="confirm_password" class="form-control" ng-model="confirm_password" ng-pattern="{{new_password}}"  ng-class="{'has-error': passwordForm.confirm_password.$invalid}" required >
-            <div class="error-container" ng-messages="registerForm.confirm_password.$error" ng-if="registerForm.confirm_password.$dirty && registerForm.$submitted" role="alert">
-                <div ng-message="required">Required</div>
-                <div ng-message="pattern">Password not the same</div>
+            <div class="row">
+                <input style="margin-top : 5px" type="password" placeholder="Confirm New Password" name="confirm_password" class="form-control" ng-model="confirm_password" ng-pattern="{{new_password}}"  ng-class="{'has-error': passwordForm.confirm_password.$invalid}" required >
+                <div class="error-container" ng-messages="registerForm.confirm_password.$error" ng-if="registerForm.confirm_password.$dirty && registerForm.$submitted" role="alert">
+                    <div ng-message="required">Required</div>
+                    <div ng-message="pattern">Password not the same</div>
+                </div>
             </div>
-            <input class="btn btn-primary pull-right" value="Change Password">
+            <div class="row">
+                <input style="margin-top : 5px" class="btn btn-primary pull-right" type="submit" value="Change Password">
+            </div>
         </form>
     </div>
 </div>
