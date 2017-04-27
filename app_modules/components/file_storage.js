@@ -1,7 +1,7 @@
 "use strict";
 const Promise   = require("bluebird");
 const fs        = require("fs");
-const sharp     = require("sharp");
+const Jimp      = require("jimp");
 const hash      = require("./hash");
 const config    = require("config");
 
@@ -27,12 +27,16 @@ function storeImageOnLocal(buffer_data){
     })
     .then(function(randomString){
         return new Promise(function(resolve, reject){
-            sharp(buffer_data).toFile(LOCAL_IMAGE_FOLDER+"/"+randomString+".png", function(err, info){
-                if(err){
-                    reject(err);
-                }else{
-                    resolve(STORAGE_CONFIG.prefix+randomString+".png");
-                }
+            Jimp.read(buffer_data).then(function(image){
+                image.write(LOCAL_IMAGE_FOLDER+"/"+randomString+".png", function(err, ignore){
+                    if(err){
+                        reject(err);
+                    }else{
+                        resolve(STORAGE_CONFIG.prefix+randomString+".png");
+                    }
+                });
+            }).catch(function (err) {
+                reject(err);
             });
         })
     });
@@ -91,8 +95,18 @@ function storeImage(imgDataURI){
     imgDataURI = new Buffer(imgDataURI, "base64");
 
     //Resize to smaller thumbnail resolution
-    return sharp(imgDataURI).resize(200,200).max().resize(200,200).crop().png()
-    .toBuffer()
+    return Jimp.read(imgDataURI)
+    .then(function(image){
+        return new Promise(function(resolve, reject){
+            image.cover(200, 200).getBuffer(Jimp.MIME_PNG, function(err, data){
+                if(err){
+                    reject(err);
+                }else{
+                    resolve(data);
+                }
+            });
+        });
+    })
     .then(function(buffer){
         switch(STORAGE_CONFIG.type){
             case STORAGE_TYPE.LOCAL:
@@ -116,7 +130,15 @@ function removeLocalImagePath(path){
     if(lastSlashIndex>=0 && ((lastSlashIndex+1) < path.length)){
         fileName = fileName.substring(lastSlashIndex+1);
     }
-    return Promise.promisify(fs.unlink)(LOCAL_IMAGE_FOLDER+"/"+fileName);
+    return Promise.promisify(fs.unlink)(LOCAL_IMAGE_FOLDER+"/"+fileName)
+    .catch(function(err){
+        if(err.message && err.message.indexOf("no such file")){
+            //Ignore if no such file/directory
+            return Promise.resolve();
+        }else{
+            return Promise.reject(err);
+        }
+    });
 }
 
 function removeAzureBlob(path){
