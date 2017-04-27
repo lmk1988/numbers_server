@@ -80,8 +80,7 @@ function setNewUserPassword(user_id, password){
         }, {
             where : {
                 [CONSTANTS.FIELDS.USER_ID] : user_id
-            },
-            transaction : t
+            }
         })
     })
     .spread(function(affectedCount, affectedRows){
