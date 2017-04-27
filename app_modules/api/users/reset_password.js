@@ -20,10 +20,13 @@ function resetPassword(req, res){
                 .then(function(resetPasswordToken){
                     const protocol = config.util.getEnv("NODE_ENV")=="prod"?"https":"http"
                     const url = protocol+"://"+config.get("Server.hostName")+"/reset_password?reset_token="+resetPasswordToken;
-                    return mail.templateResetPasswordConfirm(email, url)
-                    .then(function(body){
-                        mail.sendEmail(email, "Reset Password", body);
-                    });
+                    return mail.templateResetPasswordConfirm(email, url);
+                })
+                .then(function(body){
+                    return mail.sendEmail(email, "Reset Password", body)
+                })
+                .then(function(){
+                    res.easy_success();
                 })
                 .catch(function(err){
                     winston.error("reset password error", err, req.body);
