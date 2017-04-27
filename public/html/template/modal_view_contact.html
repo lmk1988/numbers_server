@@ -1,5 +1,16 @@
 <!doctype html>
 <div class="ngdialog-message">
+    <div class="row">
+        <div class="col-xs-12">
+            <label for="photo-selector">
+                <div class="thumbnail" data-toggle="tooltip" title="Change Image">
+                    <img ng-show="phone_booth_data.img_url != null" ng-src="{{phone_booth_data.img_url}}" style="cursor : pointer;" alt="Contact Image">
+                    <i ng-show="phone_booth_data.img_url == null" class="fa fa-file-image-o fa-4x" aria-hidden="true" style="cursor : pointer;"></i>
+                </div>
+            </label>
+            <input id="photo-selector" type="file" accept=".png, .jpg, .jpeg" style="display:none;" onchange="angular.element(this).scope().uploadImage(this.files)">
+        </div>
+    </div>
     <form name="contactForm" novalidate >
         <div class="row">
             <label class="col-md-3">Name</label>

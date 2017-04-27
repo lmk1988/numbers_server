@@ -9,6 +9,7 @@ const CONSTANTS = models.CONSTANTS;
 const UserInfo = models.UserInfo;
 const PhoneBooth = models.UserPhoneBooth;
 const PhoneBoothExtra = models.UserPhoneBoothExtra;
+const fileStorage = rootRequire("app_modules/components/file_storage");
 
 /**
  * Retrieve list of phone booth ids belonging to user
@@ -32,22 +33,100 @@ function getUserPhoneBoothIDList(user_id){
 }
 
 function addPhoneBooth(user_id, name, contact_num, contact_ext, imgURI){
-    //TODO handle URI
-    return PhoneBooth.MODEL.create({
-        [CONSTANTS.FIELDS.USER_ID] : user_id,
-        [CONSTANTS.FIELDS.NAME] : name,
-        [CONSTANTS.FIELDS.CONTACT_NUM] : contact_num,
-        [CONSTANTS.FIELDS.CONTACT_EXT] : contact_ext,
-    })
+    if(imgURI == null){
+        return PhoneBooth.MODEL.create({
+            [CONSTANTS.FIELDS.USER_ID] : user_id,
+            [CONSTANTS.FIELDS.NAME] : name,
+            [CONSTANTS.FIELDS.CONTACT_NUM] : contact_num,
+            [CONSTANTS.FIELDS.CONTACT_EXT] : contact_ext,
+        })
+    }else{
+        return fileStorage.storeImage(imgURI)
+        .then(function(newImagePath){
+            return PhoneBooth.MODEL.create({
+                [CONSTANTS.FIELDS.USER_ID] : user_id,
+                [CONSTANTS.FIELDS.NAME] : name,
+                [CONSTANTS.FIELDS.CONTACT_NUM] : contact_num,
+                [CONSTANTS.FIELDS.CONTACT_EXT] : contact_ext,
+                [CONSTANTS.FIELDS.IMG_URL] : imgURI
+            })
+        });
+    }
 }
 
-function removePhoneBooth(user_id, phone_booth_id){
-    return PhoneBooth.MODEL.destroy({
-        where : {
+function replacePhoneBoothImage(user_id, phone_booth_id, imgURI){
+    return PhoneBooth.MODEL.findOne({
+         where : {
             [CONSTANTS.FIELDS.USER_ID] : user_id,
             [CONSTANTS.FIELDS.PHONE_BOOTH_ID] : phone_booth_id
         }
+    })
+    .then(function(phoneBoothInstance){
+        if(!phoneBoothInstance){
+            return Promise.reject(new Error("replacePhoneBoothImage does not exist"));
+        }else{
+            const img_url = phoneBoothInstance.get(CONSTANTS.FIELDS.IMG_URL);
+            let removePromise;
+            //check if phone booth has img_url
+            if(img_url == null){
+                removePromise = Promise.resolve();
+            }else{
+                removePromise = fileStorage.removeImage(img_url);
+            }
+
+            return removePromise
+            .then(function(){
+                return fileStorage.storeImage(imgURI);
+            })
+            .then(function(newImagePath){
+                return PhoneBooth.MODEL.update({
+                    [CONSTANTS.FIELDS.IMG_URL] : newImagePath
+                },{
+                    where : {
+                        [CONSTANTS.FIELDS.USER_ID] : user_id,
+                        [CONSTANTS.FIELDS.PHONE_BOOTH_ID] : phone_booth_id
+                    }
+                })
+                .then(function(){
+                    return newImagePath;
+                })
+            });
+        }
     });
+}
+
+function removePhoneBooth(user_id, phone_booth_id){
+    return PhoneBooth.MODEL.findOne({
+         where : {
+            [CONSTANTS.FIELDS.USER_ID] : user_id,
+            [CONSTANTS.FIELDS.PHONE_BOOTH_ID] : phone_booth_id
+        }
+    })
+    .then(function(phoneBoothInstance){
+        if(!phoneBoothInstance){
+            //Nothing to remove
+            return Promise.resolve();
+        }else{
+            const img_url = phoneBoothInstance.get(CONSTANTS.FIELDS.IMG_URL);
+            let removePromise;
+            //check if phone booth has img_url
+            if(img_url == null){
+                removePromise = Promise.resolve();
+            }else{
+                removePromise = fileStorage.removeImage(img_url);
+            }
+
+            return removePromise
+            .then(function(){
+                return PhoneBooth.MODEL.destroy({
+                    where : {
+                        [CONSTANTS.FIELDS.USER_ID] : user_id,
+                        [CONSTANTS.FIELDS.PHONE_BOOTH_ID] : phone_booth_id
+                    }
+                });
+            })
+        }
+    })
 }
 
 function updatePhoneBooth(user_id, phone_booth_id, data){
@@ -242,6 +321,7 @@ function checkValidOwnerShip(user_id, phone_booth_id, phone_booth_extra_id){
 
 exports.getUserPhoneBoothIDList     = getUserPhoneBoothIDList;
 exports.addPhoneBooth               = addPhoneBooth;
+exports.replacePhoneBoothImage      = replacePhoneBoothImage;
 exports.removePhoneBooth            = removePhoneBooth;
 exports.updatePhoneBooth            = updatePhoneBooth;
 exports.addPhoneBoothExtra          = addPhoneBoothExtra;

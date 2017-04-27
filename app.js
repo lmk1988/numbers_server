@@ -57,10 +57,10 @@ if(!SERVER_CONFIG){
         app.all("/oauth/token", app.oauth.grant());
         app.use(middlewares.route);
         app.use("/api", api);
-        app.use('/', express.static(__dirname + '/public'));
+        app.use("/", express.static(__dirname + "/public"));
+
         app.use(app.oauth.errorHandler());
 
-        //TODO test
         app.use(function(req, res, next){
             winston.info("uncaught request", req.path, req.originalUrl);
             next();

@@ -163,6 +163,18 @@ app.service('contactService', function(accessService, $q, $rootScope){
         }
     }
 
+    this.updateContactImage = function(phone_booth_id, dataURI){
+        var origData = self.getContactDataWithID(phone_booth_id);
+        if(origData == null){
+            return $q.reject(new Error("updateContactImage phone_booth_id does not exist"));
+        }else{
+            return accessService.updatePhoneBoothImage(phone_booth_id, dataURI)
+            .then(function(updateImageRes){
+                origData.img_url = updateImageRes.data.data.img_url;
+            });
+        }
+    }
+
     //Run to retrieve data
     this.getContactData();
 });
@@ -352,6 +364,41 @@ app.controller('contactCtrl', function($scope, contactService, ModalHelper, ngDi
                         console.log("bad index: "+index);
                     }
                 };
+
+                $scope.uploadImage = function(files){
+                    if(files && files.length > 0){
+                        ModalHelper.showLoadingModal();
+                        $q(function(resolve, reject){
+                            var file = files[0];
+                            var reader = new FileReader();
+                            reader.onload = function(event){
+                                if(event.target && event.target.result){
+                                    resolve(event.target.result);
+                                }else{
+                                    reject();
+                                }
+                            };
+                            reader.readAsDataURL(file);
+                        })
+                        .then(function(dataURI){
+                            return contactService.updateContactImage($scope.phone_booth_data.phone_booth_id, dataURI);
+                        })
+                        .then(function(){
+                            //Update this view's reference
+                            var phoneBoothData = contactService.getContactDataWithID(phone_booth_id);
+                            $scope.phone_booth_data.img_url = phoneBoothData.img_url;
+                        })
+                        .then(function(){
+                            ModalHelper.closeLoadingModel();
+                            ModalHelper.showOKModal($scope, "Save Image", "Image has been saved");
+                        })
+                        .catch(function(err){
+                            console.log(err);
+                            ModalHelper.closeLoadingModel();
+                            ModalHelper.showOKModal($scope, "Save Image", "Error, please try again later");
+                        });
+                    }
+                };
             },
             showClose   : false
         });
@@ -360,14 +407,25 @@ app.controller('contactCtrl', function($scope, contactService, ModalHelper, ngDi
 
 app.directive("contactDir", function(){
     return {
-        template:   '<div class="contact-grid col-md-2 col-sm-3" ng-click="selectContact(item.phone_booth_id)">'+
+        template:   '<div class="contact-grid col-md-3 col-sm-4 col-xs-10" ng-click="selectContact(item.phone_booth_id)">'+
                         '<div class="row">'+
-                            '<label class="col-xs-3">Name:</label>'+
-                            '<div class="col-xs-9">{{item.name}}</div>'+
-                        '</div>'+
-                        '<div class="row">'+
-                            '<div class="col-xs-3" ng-show="item.contact_ext.length > 0">{{item.contact_ext}}</div>'+
-                            '<div ng-class="{ \'col-xs-12\' : (item.contact_ext.length == 0), \'col-xs-9\' : (item.contact_ext.length > 0) }">{{item.contact_num}}</div>'+
+                            '<div class="col-xs-3" ng-show="item.img_url != null">'+
+                                '<div class="thumbnail">'+
+                                    '<img ng-src="{{item.img_url}}" alt="Img">'+
+                                '</div>'+
+                            '</div>'+
+                            '<div ng-class="{ \'col-xs-9\' : (item.img_url != null) , \'col-xs-12\' : (item.img_url == null) }">'+
+                                '<div class="row">'+
+                                    '<div class="col-xs-12">'+
+                                        '<label class="col-xs-3">Name:</label>'+
+                                        '<div class="col-xs-9">{{item.name}}</div>'+
+                                    '</div>'+
+                                    '<div class="col-xs-12">'+
+                                        '<div class="col-xs-3" ng-show="item.contact_ext.length > 0">{{item.contact_ext}}</div>'+
+                                        '<div ng-class="{ \'col-xs-12\' : (item.contact_ext.length == 0), \'col-xs-9\' : (item.contact_ext.length > 0) }">{{item.contact_num}}</div>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
                         '</div>'+
                     '</div>'
     };

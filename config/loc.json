@@ -20,8 +20,8 @@
         "SaltRounds" : 10
     },
 
-    "Security" : {
-        "accessTokenLen"  : 200,
-        "refreshTokenLen" : 200
+    "Storage" : {
+        "type"      : "LOCAL",
+        "prefix"    : "/user_img/"
     }
 }

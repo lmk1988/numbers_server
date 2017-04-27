@@ -39,3 +39,12 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.thumbnail{
+    width: 60px;
+}
+
+.thumbnail img{
+    width: 100%;
+    height : 50px;
+}

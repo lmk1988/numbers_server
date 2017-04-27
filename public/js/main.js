@@ -84,6 +84,10 @@ app.service('accessService', function($http, $window, $q){
     this.removePhoneBoothExtra = function(phone_booth_id, phone_booth_extra_id){
         return handleClientError($http.delete("/api/phone_booth/"+phone_booth_id+"/extra/"+phone_booth_extra_id));
     }
+
+    this.updatePhoneBoothImage = function(phone_booth_id, imageURI){
+        return handleClientError($http.put("/api/phone_booth/"+phone_booth_id, { img_data : imageURI }));
+    }
 });
 
 app.controller('navCtrl', function($scope, $location, accessService) {
