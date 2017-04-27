@@ -1,7 +1,7 @@
 "use strict";
 
 const express           = require("express");
-const router            = express.Router();
+const router            = express.Router({mergeParams: true}); //Bring phone booth id to this router
 const auth_middleware   = rootRequire("app_modules/middlewares/auth");
 
 const postPhoneBoothExtra    = require("./post_phone_booth_extra");

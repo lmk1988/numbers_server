@@ -21,7 +21,7 @@ function postPhoneBoothExtra(req, res){
                 const details = req.body[CONSTANTS.FIELDS.DETAILS];
 
                 if(_.isString(name) && name.length < 45 && _.isString(details) && details.length < 200){
-                    return PHONE_BOOTH.addPhoneBoothExtra(req.params.phone_booth_extra_id)
+                    return PHONE_BOOTH.addPhoneBoothExtra(req.params.phone_booth_id, name, details)
                     .then(function(phoneBookExtraInstance){
                         res.easy_success({ [CONSTANTS.FIELDS.PHONE_BOOTH_EXTRA_ID] : phoneBookExtraInstance.get(CONSTANTS.FIELDS.PHONE_BOOTH_EXTRA_ID) });
                     });
