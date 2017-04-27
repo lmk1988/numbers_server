@@ -1,0 +1,34 @@
+<!doctype html>
+<div ng-controller="contactCtrl" class="col-md-10 col-md-offset-1 col-sm-offset-1 col-sm-10 col-xs-10 col-xs-offset-1">
+    <div class="row">
+        <button ng-show="searchContactQuery.length == 0" class="btn btn-default" type="button" ng-click="showAlphaneticalOrder = !showAlphaneticalOrder">Sort</button>
+        <button class="btn btn-primary" type="button" ng-click="addContact()"><i class="fa fa-user-plus" aria-hidden="true"></i>Add Contact</button>
+        <input type="text" ng-model="searchContactQuery" placeholder="Search">
+    </div>
+    <div class="contact-grid-container row">
+        <div ng-show="!showAlphaneticalOrder && searchContactQuery.length == 0">
+            <div ng-repeat="item in contact_data_arr track by $index">
+                <div contact-dir></div>
+            </div>
+        </div>
+        <div ng-show="showAlphaneticalOrder && searchContactQuery.length == 0">
+            <div ng-repeat="(charac, item_arr) in alphabetical_contact_data">
+                <div class="row">
+                    <div class="character-row col-md-12">
+                        <label class="col-md-12">{{charac}}</label>
+                        <div class="col-md-12">
+                            <div ng-repeat="item in item_arr track by $index">
+                                <div contact-dir></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-show="searchContactQuery.length > 0">
+            <div ng-repeat="item in search_result_array track by $index">
+                <div contact-dir></div>
+            </div>
+        </div>
+    </div>
+</div>

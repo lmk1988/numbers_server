@@ -72,6 +72,18 @@ app.service('accessService', function($http, $window, $q){
 
         return handleClientError($http.put("/api/phone_booth/"+phone_booth_id, data));
     };
+
+    this.addPhoneBoothExtra = function(phone_booth_id, name, details){
+        return handleClientError($http.post("/api/phone_booth/"+phone_booth_id+"/extra", { name : name, details : details }));
+    }
+
+    this.updatePhoneBoothExtra = function(phone_booth_id, phone_booth_extra_id, name, details){
+        return handleClientError($http.put("/api/phone_booth/"+phone_booth_id+"/extra/"+phone_booth_extra_id, { name : name, details : details }));
+    }
+
+    this.removePhoneBoothExtra = function(phone_booth_id, phone_booth_extra_id){
+        return handleClientError($http.delete("/api/phone_booth/"+phone_booth_id+"/extra/"+phone_booth_extra_id));
+    }
 });
 
 app.controller('navCtrl', function($scope, $location, accessService) {

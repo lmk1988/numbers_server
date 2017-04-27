@@ -1,0 +1,38 @@
+<!doctype html>
+<div class="ngdialog-message">
+    <h2>Add New Contact</h2>
+    <form name="contactForm" ng-submit="createNewContact()" novalidate >
+        <div class="row">
+            <div class="col-md-12">
+                <label>Contact Name</label>
+                <input name="contact_name" placeholder="Optional" ng-model="contact_name" class="form-control" ng-maxlength="45">
+                <div class="error-container" ng-messages="contactForm.contact_name.$error" ng-if="contactForm.contact_name.$dirty" role="alert">
+                    <div ng-message="maxlength">Name Too long</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label>Extension</label>
+                <input type="tel" name="contact_ext" placeholder="Optional" ng-model="contact_ext" class="form-control" ng-maxlength="10" ng-pattern="/^(\+)?[0-9]*$/" >
+                <div class="error-container" ng-messages="contactForm.contact_ext.$error" ng-if="contactForm.contact_ext.$dirty" role="alert">
+                    <div ng-message="maxlength">Contact Extension Too long</div>
+                    <div ng-message="pattern">Can only be 0-9 and a + infront</div>
+                </div>
+            </div>
+            <div class="col-md-8 col-md-offset-1">
+                <label>Contact Number</label>
+                <input type="tel" name="contact_num" ng-model="contact_num" class="form-control" ng-maxlength="30" ng-pattern="/^[0-9]+((-)?[0-9])*$/" required>
+                <div class="error-container" ng-messages="contactForm.contact_num.$error" role="alert">
+                    <div ng-message="required">Required</div>
+                    <div ng-message="maxlength">Contact Number Too long</div>
+                    <div ng-message="pattern">Invalid Contact Number</div>
+                </div>
+            </div>
+        </div>
+        <div class="ngdialog-buttons" style="margin-top : 5px">
+            <input class="ngdialog-button ngdialog-button-primary" type="submit" value="Create">
+            <input class="ngdialog-button ngdialog-button-secondary" type="button" ng-click="closeThisDialog()" value="Cancel">
+        </div>
+    </form>
+</div>

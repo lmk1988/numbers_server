@@ -1,0 +1,41 @@
+.error-container div {
+    color: #cd6a51;
+}
+
+.contact-grid-container{
+    margin-top: 20px;
+}
+
+.contact-grid label{
+    cursor: pointer
+}
+
+.contact-grid {
+    cursor: pointer;
+    margin-right: 10px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+    border-radius: 5px;
+}
+
+.contact-grid .row{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.ngdialog.ngdialog-theme-default .ngdialog-button.ngdialog-button-delete{
+    background: #cd6a51;
+    color: white;
+}
+
+.character-row {
+    height : 130px;
+}
+
+.glyphicon-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
