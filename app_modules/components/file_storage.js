@@ -4,6 +4,7 @@ const fs        = require("fs");
 const Jimp      = require("jimp");
 const hash      = require("./hash");
 const config    = require("config");
+const azure     = require('azure-storage');
 
 const STORAGE_CONFIG = config.get("Storage");
 
