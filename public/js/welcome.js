@@ -28,10 +28,11 @@ app.controller('loginCtrl', function($scope, $http, $window, ModalHelper) {
     $scope.password = "";
 
     $scope.login = function(){
-        $scope.email = $scope.email.trim();
-        $scope.password = $scope.password.trim();
 
         if($scope.email && $scope.password){
+
+            $scope.email = $scope.email.trim();
+            $scope.password = $scope.password.trim();
 
             //Overlay loading modal
             ModalHelper.showLoadingModal();
@@ -81,11 +82,12 @@ app.controller('registerCtrl', function($scope, $http, $location, ModalHelper) {
     $scope.confirm_password = "";
 
     $scope.register = function(){
-        $scope.email = $scope.email.trim();
-        $scope.password = $scope.password.trim();
-        $scope.confirm_password = $scope.confirm_password.trim();
 
         if($scope.email && $scope.password && $scope.password == $scope.confirm_password){
+
+            $scope.email = $scope.email.trim();
+            $scope.password = $scope.password.trim();
+            $scope.confirm_password = $scope.confirm_password.trim();
 
             //Overlay loading modal
             ModalHelper.showLoadingModal();
@@ -131,9 +133,10 @@ app.controller("forgotPasswordCtrl", function($scope, $http, $location, ModalHel
     $scope.email = "";
 
     $scope.forgotPassword = function(){
-        $scope.email = $scope.email.trim();
 
         if($scope.email){
+            $scope.email = $scope.email.trim();
+
             //Overlay loading modal
             ModalHelper.showLoadingModal();
 
