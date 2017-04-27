@@ -80,3 +80,4 @@ function templateGeneratePassword(email, new_password){
 
 exports.sendEmail                       = sendEmail;
 exports.templateResetPasswordConfirm    = templateResetPasswordConfirm;
+exports.templateGeneratePassword        = templateGeneratePassword;
