@@ -19,22 +19,28 @@ function putPhoneBooth(req, res){
         let bol_valid = true;
         const updateData = {};
         //Can be null
-        if(name != null && _.isString(name) && name.length < 45){
-            updateData[CONSTANTS.FIELDS.NAME] = name;
-        }else{
-            bol_valid = false;
+        if(name != null){
+            if(_.isString(name) && name.length < 45){
+                updateData[CONSTANTS.FIELDS.NAME] = name;
+            }else{
+                bol_valid = false;
+            }
         }
 
-        if(bol_valid && contact_num != null && _.isString(contact_num) && contact_num.length < 30){
-            updateData[CONSTANTS.FIELDS.CONTACT_NUM] = contact_num;
-        }else{
-            bol_valid = false;
+        if(contact_num != null){
+            if(bol_valid && _.isString(contact_num) && contact_num.length < 30){
+                updateData[CONSTANTS.FIELDS.CONTACT_NUM] = contact_num;
+            }else{
+                bol_valid = false;
+            }
         }
 
-        if(bol_valid && contact_ext != null && _.isString(contact_ext) && contact_ext/length < 10){
-            updateData[CONSTANTS.FIELDS.CONTACT_EXT] = contact_ext;
-        }else{
-            bol_valid = false;
+        if(contact_ext != null){
+            if(bol_valid && _.isString(contact_ext) && contact_ext.length < 10){
+                updateData[CONSTANTS.FIELDS.CONTACT_EXT] = contact_ext;
+            }else{
+                bol_valid = false;
+            }
         }
 
         if(!bol_valid){
