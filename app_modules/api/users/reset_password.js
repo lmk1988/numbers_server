@@ -30,7 +30,7 @@ function resetPassword(req, res){
                     res.easy_error();
                 });
             }else{
-                res.easy_forbidden("email does not exist");
+                res.easy_not_found("email does not exist");
             }
         });
     }else{
