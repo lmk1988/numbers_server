@@ -10,7 +10,7 @@ function changePassword(req, res){
 
     if(!req.user || !req.user.id){
         res.easy_forbidden();
-    }else if(!validator.isAlphanumeric(new_password) || !new_password.length < 8){
+    }else if(!validator.isAlphanumeric(new_password) || new_password.length < 8){
         res.easy_invalid();
     }else{
         USER.setNewUserPassword(req.user.id, new_password)
@@ -18,6 +18,7 @@ function changePassword(req, res){
             res.easy_success();
         })
         .catch(function(err){
+            winston.error("change password error", err);
             res.easy_error();
         });
     }
