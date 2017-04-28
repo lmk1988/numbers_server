@@ -22,12 +22,24 @@ body {
     border-width: 2px;
     border-color: #323232;
     border-radius: 5px;
-    background-color: #f0f0f0
+    background-color: #f0f0f0;
+    min-height : 60px;
+    margin-bottom: 10px;
+    padding : 10px !important;
 }
 
-.contact-grid .row{
-    padding-top: 5px;
-    padding-bottom: 5px;
+.contact-grid .contact-block{
+    display : inline-block;
+    height : 60px;
+    vertical-align: middle;
+}
+
+.contact-grid .contact-block .thumbnail{
+    margin-right: 5px;
+}
+
+.contact-grid .contact-content-block{
+    display : block;
 }
 
 .ngdialog.ngdialog-theme-default .ngdialog-button.ngdialog-button-delete{

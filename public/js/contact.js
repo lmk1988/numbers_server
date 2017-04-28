@@ -407,26 +407,6 @@ app.controller('contactCtrl', function($scope, contactService, ModalHelper, ngDi
 
 app.directive("contactDir", function(){
     return {
-        template:   '<div class="contact-grid col-md-3 col-sm-4 col-xs-10" ng-click="selectContact(item.phone_booth_id)">'+
-                        '<div class="row">'+
-                            '<div class="col-xs-3" ng-show="item.img_url != null">'+
-                                '<div class="thumbnail">'+
-                                    '<img ng-src="{{item.img_url}}" alt="Img">'+
-                                '</div>'+
-                            '</div>'+
-                            '<div ng-class="{ \'col-xs-9\' : (item.img_url != null) , \'col-xs-12\' : (item.img_url == null) }">'+
-                                '<div class="row">'+
-                                    '<div class="col-xs-12">'+
-                                        '<label class="col-xs-3">Name:</label>'+
-                                        '<div class="col-xs-9">{{item.name}}</div>'+
-                                    '</div>'+
-                                    '<div class="col-xs-12">'+
-                                        '<div class="col-xs-3" ng-show="item.contact_ext.length > 0">{{item.contact_ext}}</div>'+
-                                        '<div ng-class="{ \'col-xs-12\' : (item.contact_ext.length == 0), \'col-xs-9\' : (item.contact_ext.length > 0) }">{{item.contact_num}}</div>'+
-                                    '</div>'+
-                                '</div>'+
-                            '</div>'+
-                        '</div>'+
-                    '</div>'
+        templateUrl : '/html/template/contact_item.html'
     };
 });

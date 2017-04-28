@@ -28,7 +28,7 @@
             <div class="col-md-8 col-md-offset-1">
                 <label ng-show="!modifying_ext">{{phone_booth_data.contact_ext}}</label>
                 <button ng-show="!modifying_ext" class="btn fa fa-pencil pull-right" ng-click="modifying_ext = true"></button>
-                <input name="contact_ext" class="col-xs-12 form-control" type="tel" ng-show="modifying_ext" ng-model="phone_booth_data.contact_ext" ng-maxlength="10" ng-pattern="/^(\+)?[0-9]*$/">
+                <input name="contact_ext" class="col-xs-12 form-control" type="tel" ng-show="modifying_ext" ng-model="phone_booth_data.contact_ext" ng-maxlength="5" ng-pattern="/^(\+)?[0-9]*$/">
                 <div class="error-container" ng-messages="contactForm.contact_ext.$error" ng-if="contactForm.contact_ext.$dirty" role="alert">
                     <div ng-message="maxlength">Contact Extension Too long</div>
                     <div ng-message="pattern">Can only be 0-9 and a + infront</div>

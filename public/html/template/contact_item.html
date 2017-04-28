@@ -1,0 +1,21 @@
+<!doctype html>
+<div class="contact-grid col-md-3 col-sm-4 col-xs-12" ng-click="selectContact(item.phone_booth_id)">
+   
+    <div class="contact-block" ng-show="item.img_url != null">
+        <div class="thumbnail">
+            <img ng-src="{{item.img_url}}" alt="Img">
+        </div>
+    </div>
+    <div class="contact-block">
+        <div style="margin-top:5px;">
+            <div class="contact-content-block">
+                <label style="display:inline-block;">Name:</label>
+                <div style="display:inline-block;">{{item.name}}</div>
+            </div>
+            <div class="contact-content-block">
+                <div style="display:inline-block; text-decoration: underline;">{{item.contact_ext}}</div>
+                <div style="display:inline-block; text-decoration: underline;">{{item.contact_num}}</div>
+            </div>
+        </div>
+    </div>
+</div>
