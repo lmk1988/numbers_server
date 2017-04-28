@@ -1,83 +1,89 @@
 <!doctype html>
-<div class="ngdialog-message">
-    <div class="row">
-        <div class="col-xs-12">
-            <label for="photo-selector">
-                <div class="thumbnail" data-toggle="tooltip" title="Change Image">
-                    <img ng-show="phone_booth_data.img_url != null" ng-src="{{phone_booth_data.img_url}}" style="cursor : pointer;" alt="Contact Image">
-                    <i ng-show="phone_booth_data.img_url == null" class="fa fa-file-image-o fa-4x" aria-hidden="true" style="cursor : pointer;"></i>
-                </div>
-            </label>
-            <input id="photo-selector" type="file" accept=".png, .jpg, .jpeg" style="display:none;" onchange="angular.element(this).scope().uploadImage(this.files)">
-        </div>
+<div class="view-contact ngdialog-message">
+    <div style="float:left;">
+        <label for="photo-selector">
+            <div class="thumbnail" data-toggle="tooltip" title="Change Image">
+                <img ng-show="phone_booth_data.img_url != null" ng-src="{{phone_booth_data.img_url}}" style="cursor : pointer;" alt="Contact Image">
+                <i ng-show="phone_booth_data.img_url == null" class="fa fa-file-image-o fa-4x" aria-hidden="true" style="cursor : pointer;"></i>
+            </div>
+        </label>
+        <input id="photo-selector" type="file" accept=".png, .jpg, .jpeg" style="display:none;" onchange="angular.element(this).scope().uploadImage(this.files)">
     </div>
-    <form name="contactForm" novalidate >
-        <div class="row">
+    <form style="overflow:auto;" name="contactForm" novalidate >
+        <div style="display:block;">
             <label class="col-md-3">Name</label>
             <div class="col-md-8 col-md-offset-1">
-                <label ng-show="!modifying_name" >{{phone_booth_data.name}}</label>
-                <button ng-show="!modifying_name" class="btn fa fa-pencil pull-right" ng-click="modifying_name = true"></button>
-                <input name="contact_name" class="col-xs-12 form-control" type="text" ng-show="modifying_name" ng-model="phone_booth_data.name" ng-maxlength="45">
-                <div class="error-container" ng-messages="contactForm.contact_name.$error" ng-if="contactForm.contact_name.$dirty" role="alert">
-                    <div ng-message="maxlength">Name Too long</div>
+                <button style="float:right;" ng-show="!modifying_name" class="btn fa fa-pencil" ng-click="modifying_name = true"></button>
+                <div style="overflow:auto;">
+                    <label ng-show="!modifying_name" >{{phone_booth_data.name}}</label>
+                    <input name="contact_name" class="col-xs-12 form-control" type="text" ng-show="modifying_name" ng-model="phone_booth_data.name" ng-maxlength="45">
+                    <div class="error-container" ng-messages="contactForm.contact_name.$error" ng-if="contactForm.contact_name.$dirty" role="alert">
+                        <div ng-message="maxlength">Name Too long</div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div style="display:block;">
             <label class="col-md-3">Extension</label>
             <div class="col-md-8 col-md-offset-1">
-                <label ng-show="!modifying_ext">{{phone_booth_data.contact_ext}}</label>
                 <button ng-show="!modifying_ext" class="btn fa fa-pencil pull-right" ng-click="modifying_ext = true"></button>
-                <input name="contact_ext" class="col-xs-12 form-control" type="tel" ng-show="modifying_ext" ng-model="phone_booth_data.contact_ext" ng-maxlength="5" ng-pattern="/^(\+)?[0-9]*$/">
-                <div class="error-container" ng-messages="contactForm.contact_ext.$error" ng-if="contactForm.contact_ext.$dirty" role="alert">
-                    <div ng-message="maxlength">Contact Extension Too long</div>
-                    <div ng-message="pattern">Can only be 0-9 and a + infront</div>
+                <div style="overflow:auto;">
+                    <label ng-show="!modifying_ext">{{phone_booth_data.contact_ext}}</label>
+                    <input name="contact_ext" class="col-xs-12 form-control" type="tel" ng-show="modifying_ext" ng-model="phone_booth_data.contact_ext" ng-maxlength="5" ng-pattern="/^(\+)?[0-9]*$/">
+                    <div class="error-container" ng-messages="contactForm.contact_ext.$error" ng-if="contactForm.contact_ext.$dirty" role="alert">
+                        <div ng-message="maxlength">Contact Extension Too long</div>
+                        <div ng-message="pattern">Can only be 0-9 and a + infront</div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div style="display:block;">
             <label class="col-md-3">Contact Number</label>
             <div class="col-md-8 col-md-offset-1">
-                <label ng-show="!modifying_num">{{phone_booth_data.contact_num}}</label>
                 <button ng-show="!modifying_num" class="btn fa fa-pencil pull-right" ng-click="modifying_num = true"></button>
-                <input name="contact_num" class="col-xs-12 form-control" type="tel" ng-show="modifying_num" ng-model="phone_booth_data.contact_num" ng-maxlength="30" ng-pattern="/^[0-9]+((-)?[0-9])*$/" required>
-                <div class="error-container" ng-messages="contactForm.contact_num.$error" ng-if="contactForm.contact_num.$dirty" role="alert">
-                    <div ng-message="required">Required</div>
-                    <div ng-message="maxlength">Contact Number Too long</div>
-                    <div ng-message="pattern">Invalid Contact Number</div>
+                <div style="overflow:auto;">
+                    <label ng-show="!modifying_num">{{phone_booth_data.contact_num}}</label>
+                    <input name="contact_num" class="col-xs-12 form-control" type="tel" ng-show="modifying_num" ng-model="phone_booth_data.contact_num" ng-maxlength="30" ng-pattern="/^[0-9]+((-)?[0-9])*$/" required>
+                    <div class="error-container" ng-messages="contactForm.contact_num.$error" ng-if="contactForm.contact_num.$dirty" role="alert">
+                        <div ng-message="required">Required</div>
+                        <div ng-message="maxlength">Contact Number Too long</div>
+                        <div ng-message="pattern">Invalid Contact Number</div>
+                    </div>
                 </div>
             </div>
         </div>
     </form>
-    <div class="row">
-        <div class="col-xs-12">
+    <div style="display:block;">
+        <div style="display:block;">
             <label>Extras</label>
             <button ng-click="addExtra()" class="btn fa fa-plus-square-o"></button>
         </div>
         <div class="row" ng-show="phone_booth_data.phone_booth_extras.length > 0">
-            <div class="col-xs-12">
-                <label class="col-xs-3">Name</label>
-                <label class="col-xs-9">Details</label>
+            <div style="display:block;">
+                <label class="col-xs-4 col-sm-3">Name</label>
+                <label class="col-xs-8 col-sm-9">Details</label>
             </div>
             <div ng-repeat="(index,extra_data) in phone_booth_data.phone_booth_extras">
-                    <div class="col-xs-12">
-                        <div class="col-xs-3">
+                    <div style="display:block;">
+                        <div class="col-xs-4 col-sm-3">
                             <label ng-show="!extra_data.modifying">{{extra_data.name}}</label>
-                            <input class="col-xs-12" type="text" ng-show="extra_data.modifying" ng-model="extra_data.name" ng-maxlength="45">
+                            <input style="height:30px" class="col-xs-12" type="text" ng-show="extra_data.modifying" ng-model="extra_data.name" ng-maxlength="45">
                         </div>
-                        <div class="col-xs-8 center-vertical">
-                            <label ng-show="!extra_data.modifying">{{extra_data.details}}</label>
-                            <button ng-show="!extra_data.modifying" class="btn fa fa-pencil pull-right" ng-click="extra_data.modifying = true"></button>
-                            <input class="col-xs-12" type="text" ng-show="extra_data.modifying" ng-model="extra_data.details" ng-maxlength="45">
-                        </div>
-                        <div class="col-xs-1">
-                             <button type="button" class="btn btn-sm pull-right glyphicon glyphicon-remove-sign" ng-click="removeExtraAtIndex(index)"></button>
+                        <div class="col-xs-8 col-sm-9">
+                            <div style="float:right; width:34px; height:30px;">
+                                <button type="button" class="btn btn-sm glyphicon glyphicon-remove-sign" ng-click="removeExtraAtIndex(index)"></button>
+                            </div>
+                            <div style="overflow:auto; height:30px;">
+                                <label ng-show="!extra_data.modifying">{{extra_data.details}}</label>
+                                <button ng-show="!extra_data.modifying" class="btn fa fa-pencil pull-right" ng-click="extra_data.modifying = true"></button>
+                                <input style="height:30px" class="col-xs-12" type="text" ng-show="extra_data.modifying" ng-model="extra_data.details" ng-maxlength="45">
+                            </div>
                         </div>
                     </div>
             </div>
         </div>
     </div>
-    <div class="ngdialog-buttons" style="margin-top : 5px">
+    <div class="ngdialog-buttons" style="margin-top : 15px">
         <input ng-show="modifying_extra || modifying_name || modifying_ext || modifying_num" class="ngdialog-button ngdialog-button-primary" type="button" ng-click="saveContact()" value="Save">
         <input class="ngdialog-button ngdialog-button-delete" type="button" ng-click="deleteContact()" value="Delete Contact">
         <input class="ngdialog-button ngdialog-button-secondary" type="button" ng-click="closeThisDialog()" value="Cancel">
