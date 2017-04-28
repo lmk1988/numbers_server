@@ -26,9 +26,10 @@ app.service('contactService', function(accessService, $q, $rootScope){
                 contact_ext : contact_ext,
                 contact_num : contact_num,
                 phone_booth_extras : [],
-            }
+            };
 
             _contact_data_arr.push(data);
+            $rootScope.$broadcast('contactService:contact_update', _contact_data_arr);
         });
     };
 
@@ -38,6 +39,7 @@ app.service('contactService', function(accessService, $q, $rootScope){
             for(var i=0; i < _contact_data_arr.length; i++){
                 if(_contact_data_arr[i].phone_booth_id == phone_booth_id){
                     _contact_data_arr.splice(i,1);
+                    $rootScope.$broadcast('contactService:contact_update', _contact_data_arr);
                     break;
                 }
             }
@@ -269,7 +271,7 @@ app.controller('contactCtrl', function($scope, contactService, ModalHelper, ngDi
             },
             showClose   : false
         });
-    }
+    };
 
     $scope.selectContact = function(phone_booth_id){
 
@@ -405,7 +407,7 @@ app.controller('contactCtrl', function($scope, contactService, ModalHelper, ngDi
             },
             showClose   : false
         });
-    }
+    };
 });
 
 app.directive("contactDir", function(){
