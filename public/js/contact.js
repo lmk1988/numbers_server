@@ -45,7 +45,7 @@ app.service('contactService', function(accessService, $q, $rootScope){
     };
 
     this.getContactDataWithID = function(phone_booth_id){
-        for(index in _contact_data_arr){
+        for(var index in _contact_data_arr){
             var phoneBoothData = _contact_data_arr[index];
             //Look for data with the same phone_booth_id
             if(phoneBoothData.phone_booth_id == phone_booth_id){
@@ -58,7 +58,7 @@ app.service('contactService', function(accessService, $q, $rootScope){
 
     this.updateContact = function(phone_booth_id, name, contact_ext, contact_num){
         var origData = self.getContactDataWithID(phone_booth_id);
-        if(origData == null){
+        if(origData === null){
             return $q.reject(new Error("updateContact phone_booth_id does not exist"));
         }else{
             return accessService.updatePhoneBooth(phone_booth_id, name, contact_num, contact_ext)
@@ -80,7 +80,7 @@ app.service('contactService', function(accessService, $q, $rootScope){
 
     this.updateContactExtra = function(phone_booth_id, new_phone_booth_extra_arr){
         var origData = self.getContactDataWithID(phone_booth_id);
-        if(origData == null){
+        if(origData === null){
             return $q.reject(new Error("updateContactExtra phone_booth_id does not exist"));
         }else{
             var copyArr = JSON.parse(JSON.stringify(new_phone_booth_extra_arr));
@@ -92,7 +92,7 @@ app.service('contactService', function(accessService, $q, $rootScope){
 
             //Extra to delete
             var extraToDelete = _.filter(origData.phone_booth_extras, function(extra_data){
-                for(index in copyArr){
+                for(var index in copyArr){
                     if(extra_data.phone_booth_extra_id == copyArr[index].phone_booth_extra_id){
                         return false;
                     }
@@ -102,7 +102,7 @@ app.service('contactService', function(accessService, $q, $rootScope){
 
             //Extra to update
             var extraToUpdate = _.remove(copyArr, function(extra_data){
-                for(index in origData.phone_booth_extras){
+                for(var index in origData.phone_booth_extras){
                     var ref = origData.phone_booth_extras[index];
                     if(extra_data.phone_booth_extra_id == ref.phone_booth_extra_id){
                         return (ref.name != extra_data.name || ref.details != extra_data.details);
@@ -131,7 +131,7 @@ app.service('contactService', function(accessService, $q, $rootScope){
                 var deletePromise = accessService.removePhoneBoothExtra(phone_booth_id, extra_data.phone_booth_extra_id)
                 .then(function(){
                     //Remove from local
-                    for(index in origData.phone_booth_extras){
+                    for(var index in origData.phone_booth_extras){
                         if(origData.phone_booth_extras[index].phone_booth_extra_id == extra_data.phone_booth_extra_id){
                             origData.phone_booth_extras.splice(index, 1);
                             break;
@@ -146,7 +146,7 @@ app.service('contactService', function(accessService, $q, $rootScope){
                 var updatePromise = accessService.updatePhoneBoothExtra(phone_booth_id, extra_data.phone_booth_extra_id, extra_data.name, extra_data.details)
                 .then(function(){
                     //Update local
-                    for(index in origData.phone_booth_extras){
+                    for(var index in origData.phone_booth_extras){
                         var ref = origData.phone_booth_extras[index];
                         if(ref.phone_booth_extra_id == extra_data.phone_booth_extra_id){
                             ref.name = extra_data.name;
@@ -165,7 +165,7 @@ app.service('contactService', function(accessService, $q, $rootScope){
 
     this.updateContactImage = function(phone_booth_id, dataURI){
         var origData = self.getContactDataWithID(phone_booth_id);
-        if(origData == null){
+        if(origData === null){
             return $q.reject(new Error("updateContactImage phone_booth_id does not exist"));
         }else{
             return accessService.updatePhoneBoothImage(phone_booth_id, dataURI)
@@ -193,12 +193,15 @@ app.controller('contactCtrl', function($scope, contactService, ModalHelper, ngDi
         var arrCopy = $scope.contact_data_arr.slice();
         var newAlpha = {};
 
-        for(index in charset){
+
+        var checkFunc = function(data){
+            return (data.name.length > 0 && data.name[0].toUpperCase() == currentChar);
+        };
+
+        for(var index in charset){
             var currentChar = charset[index];
 
-            newAlpha[currentChar] = _.remove(arrCopy, function(data){
-                return (data.name.length > 0 && data.name[0].toUpperCase() == currentChar);
-            });
+            newAlpha[currentChar] = _.remove(arrCopy, checkFunc);
         }
 
         newAlpha["#"] = arrCopy;
@@ -209,9 +212,9 @@ app.controller('contactCtrl', function($scope, contactService, ModalHelper, ngDi
     $scope.researchContact = function(newSearchText){
         $scope.search_result_array = [];
 
-        for(index in $scope.contact_data_arr){
+        for(var index in $scope.contact_data_arr){
             var ref = $scope.contact_data_arr[index];
-            if(ref.name.indexOf(newSearchText) >= 0 || ref.contact_num.indexOf(newSearchText) >= 0){
+            if(ref.name.toUpperCase().indexOf(newSearchText.toUpperCase()) >= 0 || ref.contact_num.indexOf(newSearchText) >= 0){
                 $scope.search_result_array.push(ref);
             }
         }
