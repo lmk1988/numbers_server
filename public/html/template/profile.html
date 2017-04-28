@@ -3,6 +3,9 @@
     <div class="row" ng-controller="profileCtrl">
         <form name="profileForm" ng-submit="saveProfile()" novalidate >
             <div class="row">
+                <h3>Profile</h3>
+            </div>
+            <div class="row">
                 <label>Name</label>
                 <input name="name" ng-model="input_name" class="form-control" ng-maxlength="45">
                 <div class="error-container" ng-messages="profileForm.name.$error" ng-if="profileForm.name.$dirty" role="alert">
@@ -21,7 +24,7 @@
 
     <div class="row" ng-controller="passwordCtrl">
         <div class="row">
-            <label>Change Password</label>
+            <h3>Change Password</h3>
         </div>
         <form name="passwordForm" ng-submit="changePassword()" novalidate >
             <div class="row">
